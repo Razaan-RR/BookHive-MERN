@@ -70,7 +70,7 @@ a:hover {
   color: var(--secondary);
 }
 
-button,
+button:not(.avatar-btn),
 .btn {
   padding: 0.5rem 1rem;
   border: 2px solid transparent;
@@ -79,6 +79,13 @@ button,
   cursor: pointer;
   transition: all 0.3s ease;
   box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.avatar-btn {
+  padding: 0 !important;
+  border: 0 !important;
+  box-shadow: none !important;
+  transform: none !important;
 }
 
 button:hover,

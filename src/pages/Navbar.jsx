@@ -100,7 +100,7 @@ const Navbar = () => {
               <>
                 <button
                   onClick={() => setUserMenuOpen((prev) => !prev)}
-                  className="w-10 h-10 overflow-hidden transition-all shadow-md"
+                  className="avatar-btn w-9 h-9 rounded-full overflow-hidden flex items-center justify-center p-0 bg-transparent"
                 >
                   <img
                     src={user.photoURL || '/default-profile.png'}
@@ -108,37 +108,6 @@ const Navbar = () => {
                     className="w-full h-full object-cover"
                   />
                 </button>
-                {userMenuOpen && (
-                  <ul className="absolute right-0 mt-3 w-48 bg-card-bg rounded-lg shadow-lg font-medium text-text-primary overflow-hidden animate-fadeInUp">
-                    <li className="px-4 py-2">{user.displayName}</li>
-                    <li>
-                      <Link
-                        to="/dashboard/my-profile"
-                        className="block px-4 py-2 transition-all"
-                        onClick={() => setUserMenuOpen(false)}
-                      >
-                        Profile
-                      </Link>
-                    </li>
-                    <li>
-                      <Link
-                        to="/dashboard"
-                        className="block px-4 py-2 transition-all"
-                        onClick={() => setUserMenuOpen(false)}
-                      >
-                        Dashboard
-                      </Link>
-                    </li>
-                    <li>
-                      <button
-                        onClick={handleLogOut}
-                        className="w-full text-left px-4 py-2 font-semibold transition-all"
-                      >
-                        Log Out
-                      </button>
-                    </li>
-                  </ul>
-                )}
               </>
             ) : (
               <div className=" login-btn hidden lg:flex gap-3">
