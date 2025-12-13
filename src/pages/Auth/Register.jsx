@@ -6,7 +6,7 @@ import axios from 'axios'
 import { toast, ToastContainer } from 'react-toastify'
 import 'react-toastify/dist/ReactToastify.css'
 import { saveOrUpdateUser } from '../../utils/index'
-import { Link, Navigate, useLocation, useNavigate } from 'react-router'
+import { Link, Navigate, useLocation, useNavigate } from 'react-router-dom'
 
 const Register = () => {
   const { registerUser, updateUserProfile, user, loading } = useAuth()

@@ -1,13 +1,13 @@
 import React from "react";
 import { useForm } from "react-hook-form";
 import useAuth from "../../hooks/useAuth";
-import { Link, Navigate, useLocation, useNavigate } from "react-router";
+import { Link, Navigate, useLocation, useNavigate } from "react-router-dom";
 import SocialLogin from "../Auth/SocialLogin";
 import { toast, ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { saveOrUpdateUser } from "../../utils/index";
 
-const LogIn = () => {
+const Login = () => {
   const { signInUser, user, loading } = useAuth();
   const location = useLocation();
   const navigate = useNavigate();
@@ -106,4 +106,4 @@ const LogIn = () => {
   );
 };
 
-export default LogIn;
+export default Login;
