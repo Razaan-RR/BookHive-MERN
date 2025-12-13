@@ -18,84 +18,53 @@ const LogIn = () => {
     formState: { errors },
   } = useForm();
 
-  if (loading) return <div>Loading...</div>;
+  if (loading) return <div className="min-h-screen flex items-center justify-center">Loading...</div>;
   if (user) return <Navigate to={from} replace={true} />;
-
 
   const handleLogIn = async (data) => {
     try {
-      const result = await signInUser(data.email, data.password);
+      await signInUser(data.email, data.password);
       await saveOrUpdateUser({
         name: data.name,
         email: data.email,
       });
+      toast.success("Welcome back to BookHive!");
       setTimeout(() => {
         navigate(from, { replace: true });
       }, 800);
-      toast.success("Welcome back!");
     } catch (error) {
-      toast.error(`Sorry! Login failed: ${error.message}`);
+      toast.error(`Login failed: ${error.message}`);
     }
   };
 
   const onError = (errors) => {
-    if (errors.email) {
-      toast.error("Email is required and must be valid");
-    }
-    if (errors.password) {
-      if (errors.password.type === "required") {
-        toast.error("Password is required");
-      }
-      if (errors.password.type === "minLength") {
-        toast.error("Password must be at least 6 characters");
-      }
-      if (errors.password.type === "pattern") {
-        toast.error(
-          "Password must contain at least one uppercase and one lowercase letter"
-        );
-      }
-    }
+    if (errors.email) toast.error("Valid email is required");
+    if (errors.password) toast.error("Password is invalid");
   };
 
   return (
-    <div
-      className="min-h-screen flex items-center justify-center px-4 py-10 bg-fixed bg-cover bg-center my-10 rounded-2xl"
-    >
-      <div className="backdrop-blur-sm rounded-3xl max-w-md p-10 border border-[#818CF8]">
-        <h3 className="text-4xl font-extrabold mb-4 text-primary text-center">
-          Good to See You Again 🌿
+    <div className="min-h-screen flex items-center justify-center bg-bg px-4">
+      <div className="card w-full max-w-md animate-fadeInUp">
+        <h3 className="text-3xl font-extrabold text-center mb-2">
+          Welcome Back to <span style={{ color: "var(--primary)" }}>BookHive</span>
         </h3>
-        <p className="mb-5 text-center text-muted font-light">
-          Log in to continue your journey of reflection and growth.
+        <p className="text-center mb-6 text-sm">
+          Discover, read, and manage your books seamlessly
         </p>
 
-        <form
-          onSubmit={handleSubmit(handleLogIn, onError)}
-          className="space-y-6"
-        >
-          {/* Email */}
+        <form onSubmit={handleSubmit(handleLogIn, onError)} className="space-y-5">
           <div>
-            <label className="block mb-2 font-semibold text-text-primary">
-              Email
-            </label>
+            <label className="block mb-1 font-medium">Email</label>
             <input
               type="email"
               {...register("email", { required: true })}
-              className="rounded-full w-full px-4 py-3 border border-[#818CF8] focus:outline-none focus:ring-2 focus:ring-indigo-400 transition text-indigo-900 bg-white"
-              placeholder="Email"
+              placeholder="Enter your email"
             />
-            {errors.email && (
-              <p className="mt-1 text-sm text-red-600">
-                This field is required
-              </p>
-            )}
+            {errors.email && <p className="text-sm text-red-500 mt-1">Email is required</p>}
           </div>
 
-          {/* Password */}
           <div>
-            <label className="block mb-2 font-semibold text-text-primary">
-              Password
-            </label>
+            <label className="block mb-1 font-medium">Password</label>
             <input
               type="password"
               {...register("password", {
@@ -103,44 +72,28 @@ const LogIn = () => {
                 minLength: 6,
                 pattern: /^(?=.*[a-z])(?=.*[A-Z]).{6,}$/,
               })}
-              className="rounded-full w-full px-4 py-3 border border-[#818CF8] focus:outline-none focus:ring-2 focus:ring-indigo-400 transition text-indigo-900 bg-white/90"
-              placeholder="Create a password"
+              placeholder="Enter your password"
             />
-            {errors.password?.type === "required" && (
-              <p className="mt-1 text-sm text-red-600">Password is required</p>
-            )}
-            {errors.password?.type === "minLength" && (
-              <p className="mt-1 text-sm text-red-600">
-                Password must be at least 6 characters
-              </p>
-            )}
-            {errors.password?.type === "pattern" && (
-              <p className="mt-1 text-sm text-red-600">
-                Password must contain at least one uppercase and one lowercase
-                letter
+            {errors.password && (
+              <p className="text-sm text-red-500 mt-1">
+                Password must be at least 6 characters with upper & lower case
               </p>
             )}
           </div>
 
-          {/* Forgot password */}
           <div className="text-right">
-            <a className="link link-hover text-primary hover:text-black cursor-pointer">
-              Forgot password?
-            </a>
+            <a className="text-sm cursor-pointer">Forgot password?</a>
           </div>
 
-          <button type="submit" className="btn btn-primary w-full">
+          <button type="submit" className="btn w-full" style={{ backgroundColor: "var(--primary)", color: "#fff" }}>
             Log In
           </button>
         </form>
 
-        <p className="mt-6 text-center text-secondary font-light">
-          New to The Life Journal?{" "}
-          <Link
-            to="/auth/register"
-            className="underline hover:text-black text-primary"
-          >
-            Register
+        <p className="mt-6 text-center text-sm">
+          New to BookHive?{" "}
+          <Link to="/auth/register" className="font-semibold">
+            Create an account
           </Link>
         </p>
 

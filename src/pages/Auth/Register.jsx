@@ -10,10 +10,8 @@ import { Link, Navigate, useLocation, useNavigate } from 'react-router'
 
 const Register = () => {
   const { registerUser, updateUserProfile, user, loading } = useAuth()
-
   const location = useLocation()
   const navigate = useNavigate()
-
   const from = location.state?.from?.pathname || '/'
   const {
     register,
@@ -21,50 +19,13 @@ const Register = () => {
     formState: { errors },
   } = useForm()
 
-  if (loading) return <div>Loading...</div>
+  if (loading)
+    return (
+      <div className="min-h-screen flex items-center justify-center">
+        Loading...
+      </div>
+    )
   if (user) return <Navigate to={from} replace={true} />
-
-  // const handleRegistration = async (data) => {
-  //   try {
-  //     if (!data.photo || !data.photo[0]) {
-  //       toast.error("Please upload a photo");
-  //       return;
-  //     }
-
-  //     const profileImg = data.photo[0];
-
-  //     const formData = new FormData();
-  //     formData.append("image", profileImg);
-
-  //     const img_API_URL = `https://api.imgbb.com/1/upload?key=${
-  //       import.meta.env.VITE_IMG_HOST_KEY
-  //     }`;
-
-  //     const imgRes = await axios.post(img_API_URL, formData);
-  //     const photoURL = imgRes.data.data.display_url;
-
-  //     const userProfile = {
-  //       displayName: data.name,
-  //       photoURL: photoURL,
-  //     };
-
-  //     const result = await registerUser(data.email, data.password);
-  //     await saveOrUpdateUser({
-  //       name: data.name,
-  //       email: data.email,
-  //       photo: photoURL,
-  //     });
-
-  //     await updateUserProfile(userProfile);
-
-  //     toast.success("Congrats! Registration successful.");
-  //     setTimeout(() => {
-  //       navigate(from, { replace: true });
-  //     }, 800);
-  //   } catch (error) {
-  //     toast.error(`Sorry! Registration failed: ${error.message}`);
-  //   }
-  // };
 
   const handleRegistration = async (data) => {
     try {
@@ -74,17 +35,13 @@ const Register = () => {
       }
 
       const imageFile = data.photo[0]
-
-      // 1. Create form data (matches curl: --form "image=xxxxx")
       const formData = new FormData()
       formData.append('image', imageFile)
 
-      // 2. Build ImgBB API URL (matches your curl exactly)
       const img_API_URL = `https://api.imgbb.com/1/upload?expiration=600&key=${
         import.meta.env.VITE_IMAGE_HOST_KEY
       }`
 
-      // 3. Upload to ImgBB
       const imgRes = await axios.post(img_API_URL, formData, {
         headers: {
           'Content-Type': 'multipart/form-data',
@@ -93,23 +50,19 @@ const Register = () => {
 
       const photoURL = imgRes.data.data.url || imgRes.data.data.display_url
 
-      // 4. Prepare Firebase profile
       const userProfile = {
         displayName: data.name,
         photoURL: photoURL,
       }
 
-      // 5. Create Firebase account
-      const result = await registerUser(data.email, data.password)
+      await registerUser(data.email, data.password)
 
-      // 6. Save user in your database
       await saveOrUpdateUser({
         name: data.name,
         email: data.email,
         photo: photoURL,
       })
 
-      // 7. Update Firebase profile
       await updateUserProfile(userProfile)
 
       toast.success('Congrats! Registration successful.')
@@ -122,91 +75,62 @@ const Register = () => {
   }
 
   const onError = (errors) => {
-    if (errors.email) {
-      toast.error('Email is required and must be valid')
-    }
-    if (errors.password) {
-      if (errors.password.type === 'required') {
-        toast.error('Password is required')
-      }
-      if (errors.password.type === 'minLength') {
-        toast.error('Password must be at least 6 characters')
-      }
-      if (errors.password.type === 'pattern') {
-        toast.error(
-          'Password must contain at least one uppercase and one lowercase letter'
-        )
-      }
-    }
+    if (errors.email) toast.error('Valid email is required')
+    if (errors.password) toast.error('Password is invalid')
   }
 
   return (
-    <div className="min-h-screen flex items-center justify-center px-4 py-10 bg-fixed bg-cover bg-center my-10 rounded-2xl">
-      <div className="backdrop-blur-sm rounded-3xl max-w-md p-10 border border-[#818CF8]">
-        <h3 className="text-4xl font-extrabold mb-4 text-primary text-center">
-          Start Your Journey Today ✨
+    <div className="min-h-screen flex items-center justify-center bg-bg px-4">
+      <div className="card w-full max-w-md animate-fadeInUp">
+        <h3 className="text-3xl font-extrabold text-center mb-2">
+          Join <span style={{ color: 'var(--primary)' }}>BookHive</span>
         </h3>
-        <p className="mb-5 text-center text-muted font-light">
-          Create your free account and begin documenting your story.
+        <p className="text-center mb-6 text-sm">
+          Create an account to start your reading journey
         </p>
 
         <form
           onSubmit={handleSubmit(handleRegistration, onError)}
-          className="space-y-6"
+          className="space-y-5"
         >
-          {/* Name */}
           <div>
-            <label className="block mb-2 font-semibold text-text-primary">
-              Name
-            </label>
+            <label className="block mb-1 font-medium">Name</label>
             <input
               type="text"
               {...register('name', { required: true })}
-              className="rounded-full w-full px-4 py-2 border border-[#818CF8] focus:outline-none focus:ring-2 focus:ring-indigo-400 transition text-indigo-900 bg-white"
-              placeholder="Your full name"
+              placeholder="Enter your full name"
             />
             {errors.name && (
-              <p className="mt-1 text-sm text-red-600">Name is required</p>
+              <p className="text-sm text-red-500 mt-1">Name is required</p>
             )}
           </div>
 
-          {/* Photo */}
           <div>
-            <label className="block mb-2 font-semibold text-text-primary">
-              Photo
-            </label>
+            <label className="block mb-1 font-medium">Photo</label>
             <input
               type="file"
               {...register('photo', { required: true })}
-              className="rounded-full w-full file-input file-input-bordered border-[#818CF8]"
               accept="image/*"
             />
             {errors.photo && (
-              <p className="mt-1 text-sm text-red-600">Photo is required</p>
+              <p className="text-sm text-red-500 mt-1">Photo is required</p>
             )}
           </div>
 
-          {/* Email */}
           <div>
-            <label className="block mb-2 font-semibold text-text-primary">
-              Email
-            </label>
+            <label className="block mb-1 font-medium">Email</label>
             <input
               type="email"
               {...register('email', { required: true })}
-              className="rounded-full w-full px-4 py-3 border border-[#818CF8] focus:outline-none focus:ring-2 focus:ring-indigo-400 transition text-indigo-900 bg-white/90"
-              placeholder="Your email address"
+              placeholder="Enter your email"
             />
             {errors.email && (
-              <p className="mt-1 text-sm text-red-600">Email is required</p>
+              <p className="text-sm text-red-500 mt-1">Email is required</p>
             )}
           </div>
 
-          {/* Password */}
           <div>
-            <label className="block mb-2 font-semibold text-text-primary">
-              Password
-            </label>
+            <label className="block mb-1 font-medium">Password</label>
             <input
               type="password"
               {...register('password', {
@@ -214,36 +138,27 @@ const Register = () => {
                 minLength: 6,
                 pattern: /^(?=.*[a-z])(?=.*[A-Z]).{6,}$/,
               })}
-              className="rounded-full w-full px-4 py-3 border border-[#818CF8] focus:outline-none focus:ring-2 focus:ring-indigo-400 transition text-indigo-900 bg-white/90"
               placeholder="Create a password"
             />
-            {errors.password?.type === 'required' && (
-              <p className="mt-1 text-sm text-red-600">Password is required</p>
-            )}
-            {errors.password?.type === 'minLength' && (
-              <p className="mt-1 text-sm text-red-600">
-                Password must be at least 6 characters
-              </p>
-            )}
-            {errors.password?.type === 'pattern' && (
-              <p className="mt-1 text-sm text-red-600">
-                Password must contain at least one uppercase and one lowercase
-                letter
+            {errors.password && (
+              <p className="text-sm text-red-500 mt-1">
+                Password must be at least 6 characters with upper & lower case
               </p>
             )}
           </div>
 
-          <button type="submit" className="btn btn-primary w-full">
+          <button
+            type="submit"
+            className="btn w-full"
+            style={{ backgroundColor: 'var(--primary)', color: '#fff' }}
+          >
             Register
           </button>
         </form>
 
-        <p className="text-center mt-6 text-secondary font-light">
+        <p className="mt-6 text-center text-sm">
           Already have an account?{' '}
-          <Link
-            to="/auth/login"
-            className="underline hover:text-black text-primary"
-          >
+          <Link to="/auth/login" className="font-semibold">
             Log In
           </Link>
         </p>
@@ -252,6 +167,7 @@ const Register = () => {
           <SocialLogin />
         </div>
       </div>
+
       <ToastContainer position="top-right" autoClose={3000} />
     </div>
   )
