@@ -17,11 +17,13 @@ import MyBooks from '../pages/Dashboard/Librarian/MyBooks'
 import ManageUsers from '../pages/Dashboard/Admin/ManageUsers'
 import ManageBooks from '../pages/Dashboard/Admin/ManageBooks'
 import Orders from '../pages/Dashboard/Librarian/Orders'
+import ErrorPage from '../components/Common/ErrorPage'
 
 export const router = createBrowserRouter([
   {
     path: '/',
     element: <RootLayout />,
+    errorElement: <ErrorPage></ErrorPage>,
     children: [
       { index: true, element: <Home /> },
       { path: 'books', element: <AllBooks /> },
