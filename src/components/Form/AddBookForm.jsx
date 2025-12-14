@@ -3,12 +3,27 @@ import { FaBookOpen, FaUpload } from 'react-icons/fa'
 import { useForm } from 'react-hook-form'
 import { imageUpload } from '../../utils/imageUpload'
 import axios from 'axios'
+import { useMutation } from '@tanstack/react-query'
+import toast from 'react-hot-toast'
 
 function AddBookForm() {
+  const { mutateAsync } = useMutation({
+    mutationFn: async (payload) =>
+      await axios.post(`${import.meta.env.VITE_API_URL}/books`, payload),
+    onSuccess: () => {
+      toast.success('Book added successfully')
+    },
+    onError: (error) => {
+      console.log(error)
+      toast.error('Failed to add book')
+    },
+  })
+
   const {
     register,
     handleSubmit,
     formState: { errors },
+    reset,
   } = useForm()
 
   const onSubmit = async (data) => {
@@ -27,8 +42,8 @@ function AddBookForm() {
         image: imageUrl,
       }
 
-      const {data} = await axios.post(`${import.meta.env.VITE_API_URL}/books`, bookData)
-      console.log(data)
+      await mutateAsync(bookData)
+      reset()
     } catch (err) {
       console.log(err)
     }
