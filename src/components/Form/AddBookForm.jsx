@@ -2,6 +2,7 @@ import React from 'react'
 import { FaBookOpen, FaUpload } from 'react-icons/fa'
 import { useForm } from 'react-hook-form'
 import { imageUpload } from '../../utils/imageUpload'
+import axios from 'axios'
 
 function AddBookForm() {
   const {
@@ -10,31 +11,28 @@ function AddBookForm() {
     formState: { errors },
   } = useForm()
 
-  // const onSubmit = (data) => {
-  //   console.log(data)
-  // }
+  const onSubmit = async (data) => {
+    const { name, author, price, status, description, image } = data
+    const imageFile = image[0]
 
-const onSubmit = async (data) => {
-  const { name, author, price, status, description, image } = data
-  const imageFile = image[0]
+    try {
+      const imageUrl = await imageUpload(imageFile)
 
-  try {
-    const imageUrl = await imageUpload(imageFile)
+      const bookData = {
+        name,
+        author,
+        price: Number(price),
+        status,
+        description,
+        image: imageUrl,
+      }
 
-    const bookData = {
-      name,
-      author,
-      price: Number(price),
-      status,
-      description,
-      image: imageUrl,
+      const {data} = await axios.post(`${import.meta.env.VITE_API_URL}/books`, bookData)
+      console.log(data)
+    } catch (err) {
+      console.log(err)
     }
-
-    console.table(bookData)
-  } catch (error) {
-    console.log(error)
   }
-}
 
   return (
     <div className="min-h-screen flex items-center justify-center bg-(--bg) px-4">
@@ -158,4 +156,3 @@ const onSubmit = async (data) => {
 }
 
 export default AddBookForm
-
