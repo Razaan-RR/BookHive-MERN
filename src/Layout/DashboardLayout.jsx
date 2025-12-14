@@ -3,11 +3,12 @@ import Sidebar from '../components/Dashboard/Sidebar/Sidebar'
 
 const DashboardLayout = () => {
   return (
-    <div className="min-h-screen flex bg-white">
-      <div className="hidden md:block w-64 fixed inset-y-0 left-0">
+    <div className="flex justify-center items-start min-h-screen bg-white">
+      <div className='w-1/5'>
         <Sidebar />
       </div>
-      <div className="flex-1 md:ml-64 p-5">
+
+      <div className="w-4/5 p-5 min-h-screen">
         <Outlet />
       </div>
     </div>
