@@ -22,7 +22,7 @@ const Card = ({ book }) => {
         <div className="text-sm opacity-80">By {author}</div>
 
         <div className="flex items-center justify-between mt-2">
-          <span className="font-semibold">৳ {price}</span>
+          <span className="font-semibold">BDT {price}</span>
           <span className="px-3 py-1 text-xs rounded-full bg-(--primary)/10 text-(--primary) font-semibold">
             {status}
           </span>
