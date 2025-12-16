@@ -1,8 +1,10 @@
-import React from 'react'
+import AllBooks from "../../Books/AllBooks"
 
 function Home() {
   return (
-    <div>Home</div>
+    <div>
+      <AllBooks></AllBooks>
+    </div>
   )
 }
 
