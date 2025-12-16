@@ -18,6 +18,7 @@ import ManageUsers from '../pages/Dashboard/Admin/ManageUsers'
 import ManageBooks from '../pages/Dashboard/Admin/ManageBooks'
 import Orders from '../pages/Dashboard/Librarian/Orders'
 import ErrorPage from '../components/Common/ErrorPage'
+import PaymentSuccess from '../pages/Payment/PaymentSuccess'
 
 export const router = createBrowserRouter([
   {
@@ -28,6 +29,7 @@ export const router = createBrowserRouter([
       { index: true, element: <Home /> },
       { path: 'books', element: <AllBooks /> },
       { path: 'book/:id', element: <BookDetails /> },
+      { path: 'payment-success', element: <PaymentSuccess /> },
     ],
   },
   {

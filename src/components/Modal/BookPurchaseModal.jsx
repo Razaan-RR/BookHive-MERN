@@ -1,18 +1,21 @@
 import { Dialog, DialogPanel, DialogTitle } from '@headlessui/react'
 import useAuth from '../../hooks/useAuth'
 import { useState } from 'react'
+import axios from 'axios'
 
 const BookPurchaseModal = ({ isOpen, closeModal, book }) => {
   const { user } = useAuth()
-  const { name, price } = book || {}
+  const { _id, name, price, description, image } = book || {}
   const [phone, setPhone] = useState('')
   const [address, setAddress] = useState('')
 
   const handlePlaceOrder = async () => {
-    const orderInfo = {
-      bookId: book._id,
+    const paymentInfo = {
+      bookId: _id,
       name,
       price,
+      description,
+      image,
       customer: {
         name: user?.displayName,
         email: user?.email,
@@ -20,8 +23,12 @@ const BookPurchaseModal = ({ isOpen, closeModal, book }) => {
         address,
       },
     }
-    console.log(orderInfo)
-    closeModal()
+
+    const { data } = await axios.post(
+      `${import.meta.env.VITE_API_URL}/create-book-checkout-session`,
+      paymentInfo
+    )
+    window.location.href = data.url
   }
 
   return (
