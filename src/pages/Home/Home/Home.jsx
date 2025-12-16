@@ -1,11 +1,5 @@
-import AllBooks from "../../Books/AllBooks"
-
 function Home() {
-  return (
-    <div>
-      <AllBooks></AllBooks>
-    </div>
-  )
+  return <div>Home</div>
 }
 
 export default Home

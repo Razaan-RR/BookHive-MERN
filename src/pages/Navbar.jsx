@@ -26,12 +26,6 @@ const Navbar = () => {
     return () => document.removeEventListener('mousedown', handleClickOutside)
   }, [])
 
-  const handleLogOut = () => {
-    logOut()
-      .then(() => toast.success('Logged out successfully'))
-      .catch((err) => console.log(err))
-  }
-
   const toggleTheme = () => {
     setDarkMode((prev) => !prev)
     document.documentElement.setAttribute(
