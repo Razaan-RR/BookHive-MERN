@@ -3,9 +3,12 @@ import { useQuery } from '@tanstack/react-query'
 import axios from 'axios'
 import Container from '../../components/Common/Container'
 import LoadingSpinner from '../../components/Common/LoadingSpinner'
+import { useState } from 'react'
+import BookPurchaseModal from '../../components/Modal/BookPurchaseModal'
 
 function BookDetails() {
   const { id } = useParams()
+  const [isOpen, setIsOpen] = useState(false)
 
   const { data: book = {}, isLoading } = useQuery({
     queryKey: ['book', id],
@@ -44,12 +47,21 @@ function BookDetails() {
 
           <div className="flex items-center justify-between mt-4">
             <span className="text-3xl font-bold">BDT {price}</span>
-            <button className="px-6 py-3 rounded-xl bg-(--primary) text-white font-semibold hover:opacity-90 transition">
-              Buy Now
+            <button
+              onClick={() => setIsOpen(true)}
+              className="px-6 py-3 rounded-xl bg-(--primary) text-white font-semibold hover:opacity-90 transition"
+            >
+              Order Now
             </button>
           </div>
         </div>
       </div>
+
+      <BookPurchaseModal
+        isOpen={isOpen}
+        closeModal={() => setIsOpen(false)}
+        book={book}
+      />
     </Container>
   )
 }
