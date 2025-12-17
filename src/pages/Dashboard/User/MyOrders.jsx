@@ -1,6 +1,25 @@
+import { useQuery } from '@tanstack/react-query'
+import axios from 'axios'
+import useAuth from '../../../hooks/useAuth'
 import Container from '../../../components/Common/Container'
+import LoadingSpinner from '../../../components/Common/LoadingSpinner'
 
 function MyOrders() {
+  const { user } = useAuth()
+
+  const { data: orders = [], isLoading } = useQuery({
+    enabled: !!user?.email,
+    queryKey: ['my-orders', user?.email],
+    queryFn: async () => {
+      const res = await axios.get(
+        `${import.meta.env.VITE_API_URL}/my-orders/${user.email}`
+      )
+      return res.data
+    },
+  })
+
+  if (isLoading) return <LoadingSpinner />
+
   return (
     <Container>
       <div className="py-12 animate-fadeInUp">
@@ -19,70 +38,41 @@ function MyOrders() {
             </thead>
 
             <tbody>
-              <tr className="hover:bg-(--hover)">
-                <td className="px-4 py-4 border-b font-semibold">
-                  Atomic Habits
-                </td>
-                <td className="px-4 py-4 border-b">12 Sep 2025</td>
-                <td className="px-4 py-4 border-b">
-                  <span className="px-3 py-1 rounded-full text-sm bg-(--secondary)/20 text-(--text)">
-                    Pending
-                  </span>
-                </td>
-                <td className="px-4 py-4 border-b">
-                  <span className="px-3 py-1 rounded-full text-sm bg-red-100 text-red-600">
-                    Unpaid
-                  </span>
-                </td>
-                <td className="px-4 py-4 border-b flex gap-2 justify-center">
-                  <button className="bg-(--primary) text-white rounded-lg px-4 py-1">
-                    Pay Now
-                  </button>
-                  <button className="bg-red-500 text-white rounded-lg px-4 py-1">
-                    Cancel
-                  </button>
-                </td>
-              </tr>
+              {orders.length === 0 && (
+                <tr>
+                  <td colSpan="5" className="text-center py-6 opacity-70">
+                    No orders found
+                  </td>
+                </tr>
+              )}
 
-              <tr className="hover:bg-(--hover)">
-                <td className="px-4 py-4 border-b font-semibold">
-                  The Psychology of Money
-                </td>
-                <td className="px-4 py-4 border-b">05 Sep 2025</td>
-                <td className="px-4 py-4 border-b">
-                  <span className="px-3 py-1 rounded-full text-sm bg-green-100 text-green-600">
-                    Completed
-                  </span>
-                </td>
-                <td className="px-4 py-4 border-b">
-                  <span className="px-3 py-1 rounded-full text-sm bg-green-100 text-green-600">
-                    Paid
-                  </span>
-                </td>
-                <td className="px-4 py-4 border-b text-center">
-                  <span className="text-sm opacity-70">—</span>
-                </td>
-              </tr>
+              {orders.map((order) => (
+                <tr key={order._id} className="hover:bg-(--hover)">
+                  <td className="px-4 py-4 border-b font-semibold">
+                    {order.name}
+                  </td>
 
-              <tr className="hover:bg-(--hover)">
-                <td className="px-4 py-4 border-b font-semibold">
-                  Deep Work
-                </td>
-                <td className="px-4 py-4 border-b">01 Sep 2025</td>
-                <td className="px-4 py-4 border-b">
-                  <span className="px-3 py-1 rounded-full text-sm bg-gray-200 text-gray-600">
-                    Cancelled
-                  </span>
-                </td>
-                <td className="px-4 py-4 border-b">
-                  <span className="px-3 py-1 rounded-full text-sm bg-gray-200 text-gray-600">
-                    Unpaid
-                  </span>
-                </td>
-                <td className="px-4 py-4 border-b text-center">
-                  <span className="text-sm opacity-70">—</span>
-                </td>
-              </tr>
+                  <td className="px-4 py-4 border-b">
+                    {new Date(order.orderDate).toLocaleDateString()}
+                  </td>
+
+                  <td className="px-4 py-4 border-b">
+                    <span className="px-3 py-1 rounded-full text-sm bg-(--secondary)/20">
+                      {order.status}
+                    </span>
+                  </td>
+
+                  <td className="px-4 py-4 border-b">
+                    <span className="px-3 py-1 rounded-full text-sm bg-green-100 text-green-600">
+                      {order.paymentStatus}
+                    </span>
+                  </td>
+
+                  <td className="px-4 py-4 border-b text-center">
+                    <span className="text-sm opacity-70">—</span>
+                  </td>
+                </tr>
+              ))}
             </tbody>
           </table>
         </div>
