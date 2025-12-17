@@ -1,28 +1,30 @@
-import React from "react";
-import useAuth from "../../hooks/useAuth";
-import { toast, ToastContainer } from "react-toastify";
-import { saveOrUpdateUser } from "../../utils/index";
+import React from 'react'
+import useAuth from '../../hooks/useAuth'
+import { toast, ToastContainer } from 'react-toastify'
+import { saveOrUpdateUser } from '../../utils/index'
+import { Navigate } from 'react-router-dom'
 
 const SocialLogin = () => {
-  const { signInGoogle } = useAuth();
- 
+  const { signInGoogle } = useAuth()
+
   const handleGoogleSignIn = async () => {
     try {
-      const result = await signInGoogle();
-      const user = result.user;
+      const result = await signInGoogle()
+      const user = result.user
 
       await saveOrUpdateUser({
         name: user?.displayName,
         email: user?.email,
         photo: user?.photoURL,
-      });
+      })
 
-      toast.success("Logged in with Google successfully.");
+      toast.success('Logged in with Google successfully.')
+      Navigate('/')
     } catch (error) {
-      console.log(error);
-      toast.error(`Google Sign-In failed: ${error.message}`);
+      console.log(error)
+      toast.error(`Google Sign-In failed: ${error.message}`)
     }
-  };
+  }
 
   return (
     <div>
@@ -63,7 +65,7 @@ const SocialLogin = () => {
       </button>
       <ToastContainer position="top-right" autoClose={3000} />
     </div>
-  );
-};
+  )
+}
 
-export default SocialLogin;
+export default SocialLogin
