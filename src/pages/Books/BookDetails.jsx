@@ -108,7 +108,7 @@ function BookDetails() {
   return (
     <Container>
       <div className="mx-auto max-w-6xl px-4 py-14 grid grid-cols-1 lg:grid-cols-2 gap-14">
-        <div className="relative rounded-[2rem] overflow-hidden shadow-2xl bg-gradient-to-br from-(--primary)/20 to-(--secondary)/20">
+        <div className="relative rounded-4xl overflow-hidden shadow-2xl bg-linear-to-br from-(--primary)/20 to-(--secondary)/20">
           <img src={image} alt={name} className="w-full h-full object-cover" />
         </div>
 

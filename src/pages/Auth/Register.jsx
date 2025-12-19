@@ -42,11 +42,7 @@ const Register = () => {
         import.meta.env.VITE_IMAGE_HOST_KEY
       }`
 
-      const imgRes = await axios.post(img_API_URL, formData, {
-        headers: {
-          'Content-Type': 'multipart/form-data',
-        },
-      })
+      const imgRes = await axios.post(img_API_URL, formData)
 
       const photoURL = imgRes.data.data.url || imgRes.data.data.display_url
 

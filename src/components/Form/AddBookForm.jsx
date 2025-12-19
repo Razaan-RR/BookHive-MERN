@@ -5,8 +5,12 @@ import { imageUpload } from '../../utils/imageUpload'
 import axios from 'axios'
 import { useMutation } from '@tanstack/react-query'
 import toast from 'react-hot-toast'
+import { getAuth } from 'firebase/auth'
 
 function AddBookForm() {
+  const auth = getAuth()
+  const user = auth.currentUser
+
   const { mutateAsync } = useMutation({
     mutationFn: async (payload) =>
       await axios.post(`${import.meta.env.VITE_API_URL}/books`, payload),
@@ -27,6 +31,11 @@ function AddBookForm() {
   } = useForm()
 
   const onSubmit = async (data) => {
+    if (!user?.email) {
+      toast.error('User email not found. Please log in again.')
+      return
+    }
+
     const { name, author, price, status, description, image } = data
     const imageFile = image[0]
 
@@ -40,6 +49,7 @@ function AddBookForm() {
         status,
         description,
         image: imageUrl,
+        email: user.email,
       }
 
       await mutateAsync(bookData)
