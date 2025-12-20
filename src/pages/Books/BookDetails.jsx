@@ -129,12 +129,12 @@ function BookDetails() {
               value={review}
               onChange={e => setReview(e.target.value)}
               placeholder="Write your review..."
-              className="w-full p-3 rounded-xl border-2 border-[var(--secondary)]/30 bg-[var(--card-bg)] resize-none text-sm sm:text-base shadow-inner-glow focus:outline-none focus:ring-2 focus:ring-[var(--primary)] transition"
+              className="w-full p-3 rounded-xl border-2 border-(--secondary)/30 bg-(--card-bg) resize-none text-sm sm:text-base shadow-inner-glow focus:outline-none focus:ring-2 focus:ring-[var(--primary)] transition"
               rows={3}
             />
             <button
               onClick={handleSubmitReview}
-              className="mt-3 px-4 py-2 rounded-xl bg-gradient-to-r from-[var(--primary)] to-[var(--secondary)] text-white font-semibold shadow-glow hover:scale-105 transition-transform"
+              className="mt-3 px-4 py-2 rounded-xl bg-linear-to-r from-(--primary) to-(--secondary) text-white font-semibold shadow-glow hover:scale-105 transition-transform"
             >
               Submit Review
             </button>
@@ -146,7 +146,7 @@ function BookDetails() {
               {submittedReviews.map(r => (
                 <div
                   key={r.id}
-                  className="bg-[var(--secondary)]/10 p-3 rounded-xl border border-[var(--secondary)]/30 shadow-glow flex flex-col gap-1"
+                  className="bg-(--secondary)/10 p-3 rounded-xl border shadow-glow flex flex-col gap-1"
                 >
                   <div className="flex items-center gap-1">
                     {[1, 2, 3, 4, 5].map(star => (
