@@ -3,18 +3,16 @@ import { useQuery } from '@tanstack/react-query'
 import axios from 'axios'
 import Container from '../../components/Common/Container'
 import LoadingSpinner from '../../components/Common/LoadingSpinner'
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import BookPurchaseModal from '../../components/Modal/BookPurchaseModal'
 import { FaHeart, FaBook, FaCartShopping, FaStar } from 'react-icons/fa6'
+import useAuth from '../../hooks/useAuth'
 
 function BookDetails() {
   const { id } = useParams()
+  const { user } = useAuth()
 
-  const wishlist = JSON.parse(localStorage.getItem('wishlist')) || []
-  const [wishlisted, setWishlisted] = useState(
-    wishlist.some(b => b._id === id)
-  )
-
+  const [wishlisted, setWishlisted] = useState(false)
   const [isOpen, setIsOpen] = useState(false)
   const [rating, setRating] = useState(0)
   const [review, setReview] = useState('')
@@ -30,13 +28,36 @@ function BookDetails() {
     },
   })
 
+  // Fetch user's wishlist to check if this book is already wishlisted
+  useEffect(() => {
+    const fetchWishlist = async () => {
+      if (!user?.email) return
+      const { data } = await axios.get(`${import.meta.env.VITE_API_URL}/wishlist/${user.email}`)
+      setWishlisted(data.some(b => b._id === id))
+    }
+    fetchWishlist()
+  }, [user, id])
+
   if (isLoading) return <LoadingSpinner />
 
-  const handleWishlist = () => {
-    const list = JSON.parse(localStorage.getItem('wishlist')) || []
-    if (list.some(b => b._id === id)) return
-    localStorage.setItem('wishlist', JSON.stringify([...list, book]))
-    setWishlisted(true)
+  const handleWishlist = async () => {
+    if (!user?.email) return alert('Please login first')
+
+    if (wishlisted) {
+      // Remove from wishlist
+      await axios.post(`${import.meta.env.VITE_API_URL}/wishlist/remove`, {
+        email: user.email,
+        bookId: id,
+      })
+      setWishlisted(false)
+    } else {
+      // Add to wishlist
+      await axios.post(`${import.meta.env.VITE_API_URL}/wishlist/add`, {
+        email: user.email,
+        bookId: id,
+      })
+      setWishlisted(true)
+    }
   }
 
   const handleSubmitReview = () => {
