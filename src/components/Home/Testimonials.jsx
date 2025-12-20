@@ -1,4 +1,5 @@
 import { FaQuoteLeft } from 'react-icons/fa6'
+import { motion } from 'framer-motion'
 
 const testimonials = [
   {
@@ -38,8 +39,12 @@ const Testimonials = () => {
 
       <div className="relative z-20 space-y-24 max-w-6xl mx-auto">
         {testimonials.map((t, i) => (
-          <div
+          <motion.div
             key={i}
+            initial={{ opacity: 0, x: i % 2 === 0 ? -120 : 120 }}
+            whileInView={{ opacity: 1, x: 0 }}
+            transition={{ duration: 0.9, ease: 'easeOut' }}
+            viewport={{ once: true, amount: 0.3 }}
             className={`flex flex-col md:flex-row items-center gap-10 ${
               i % 2 !== 0 ? 'md:flex-row-reverse' : ''
             }`}
@@ -65,7 +70,7 @@ const Testimonials = () => {
                 </div>
               </div>
             </div>
-          </div>
+          </motion.div>
         ))}
       </div>
     </section>
