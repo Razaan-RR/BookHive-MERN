@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import axios from 'axios'
 import { Link } from 'react-router-dom'
+import LoadingSpinner from '../Common/LoadingSpinner'
 
 const bgImages = [
   'https://images.unsplash.com/photo-1507842217343-583bb7270b66?auto=format&fit=crop&w=800&q=60',
@@ -32,12 +33,11 @@ const LatestBooks = () => {
     fetchLatestBooks()
   }, [])
 
-  if (loading) {
-    return <p className="text-center py-16">Loading latest books...</p>
-  }
+  if (loading) 
+    return <LoadingSpinner></LoadingSpinner>
 
   return (
-    <section className="py-16 px-4 sm:px-6 md:px-10 lg:px-20">
+    <section className="overflow-hidden py-16 px-4 sm:px-6 md:px-10 lg:px-20">
       <div className="max-w-7xl mx-auto text-center">
         <span className="inline-block mb-16 mt-10 px-6 py-2 rounded-full text-2xl sm:text-3xl font-bold bg-(--secondary)/25 text-(--text) shadow-sm">
           Latest Arrivals 📚

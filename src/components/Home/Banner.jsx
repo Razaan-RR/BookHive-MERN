@@ -41,7 +41,7 @@ function Banner() {
     )
 
   return (
-    <section className="relative w-full h-[80vh] lg:h-[90vh] overflow-hidden flex items-center justify-center rounded-3xl">
+    <section className="overflow-hidden relative w-full h-[80vh] lg:h-[90vh] flex items-center justify-center rounded-3xl">
       <div className="absolute inset-0 bg-linear-to-r from-blue-600 to-yellow-400 opacity-80 z-0"></div>
 
       {books.map((book, index) => (

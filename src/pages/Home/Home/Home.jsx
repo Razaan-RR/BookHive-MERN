@@ -18,7 +18,7 @@ const slideRight = {
 
 function Home() {
   return (
-    <div>
+    <div className='overflow-hidden'>
       <Banner />
 
       <motion.div
@@ -60,7 +60,7 @@ function Home() {
       >
         <FeaturedCollections />
       </motion.div>
-      
+
       <Testimonials />
     </div>
   )
