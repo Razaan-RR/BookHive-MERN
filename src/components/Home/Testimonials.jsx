@@ -1,5 +1,6 @@
 import { FaQuoteLeft } from 'react-icons/fa6'
 import { motion } from 'framer-motion'
+console.log(motion)
 
 const testimonials = [
   {
@@ -28,7 +29,7 @@ const testimonials = [
 const Testimonials = () => {
   return (
     <section className="relative overflow-hidden pt-10 pb-10 px-4 sm:px-6 md:px-10 lg:px-20">
-      <div className="absolute top-0 left-0 w-full h-40 bg-gradient-to-b from-(--bg) to-transparent z-10" />
+      <div className="absolute top-0 left-0 w-full h-40 bg-linear-to-b from-(--bg) to-transparent z-10" />
       <div className="absolute -top-32 left-1/2 -translate-x-1/2 w-[700px] h-[700px] bg-(--secondary)/20 blur-[200px] rounded-full" />
 
       <div className="text-center mb-28 relative z-20">

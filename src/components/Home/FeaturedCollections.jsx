@@ -40,7 +40,7 @@ const FeaturedCollections = () => {
         {collections.map((col, i) => (
           <div
             key={i}
-            className="relative group min-h-[320px] sm:min-h-[380px] flex items-end"
+            className="relative group min-h-80 sm:min-h-[380px] flex items-end"
           >
             <img
               src={col.img}

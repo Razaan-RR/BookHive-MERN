@@ -82,7 +82,7 @@ const WhyChooseBookHive = () => {
           </div>
 
           <div className="relative">
-            <div className="rounded-[2.5rem] p-10 bg-gradient-to-br from-(--primary) to-blue-700 text-white shadow-2xl">
+            <div className="rounded-[2.5rem] p-10 bg-linear-to-br from-(--primary) to-blue-700 text-white shadow-2xl">
               <h3 className="text-2xl font-bold mb-4">
                 Built for Readers Who Care 📚
               </h3>

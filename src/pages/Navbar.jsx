@@ -51,7 +51,7 @@ const Navbar = () => {
           onClick={() => setMobileOpen(false)}
           className="px-5 py-2 transition-all font-medium"
         >
-          Books
+          All Books
         </NavLink>
       </li>
       {user && (

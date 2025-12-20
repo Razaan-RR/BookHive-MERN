@@ -68,14 +68,14 @@ export default function FeaturedCategories() {
           {categories.map((cat, index) => (
             <div
               key={index}
-              className="relative w-52 h-64 rounded-3xl overflow-hidden shadow-lg cursor-pointer flex-shrink-0 transform transition-transform hover:scale-105"
+              className="relative w-52 h-64 rounded-3xl overflow-hidden shadow-lg cursor-pointer shrink-0 transform transition-transform hover:scale-105"
             >
               <img
                 src={cat.image}
                 alt={cat.name}
                 className="w-full h-full object-cover"
               />
-              <div className="absolute inset-0 bg-gradient-to-t from-(--primary)/70 to-(--secondary)/30 flex flex-col justify-end p-4 rounded-3xl">
+              <div className="absolute inset-0 bg-linear-to-t from-(--primary)/70 to-(--secondary)/30 flex flex-col justify-end p-4 rounded-3xl">
                 <span className="text-3xl mb-2">{cat.icon}</span>
                 <h3 className="text-xl font-bold text-white">{cat.name}</h3>
               </div>

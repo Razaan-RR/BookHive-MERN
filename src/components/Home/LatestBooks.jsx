@@ -54,7 +54,7 @@ const LatestBooks = () => {
                 <div className="absolute -bottom-24 -right-24 w-56 h-56 bg-(--secondary) opacity-2 blur-5xl rounded-full" />
               </div>
 
-              <div className="absolute top-0 right-0 w-24 h-24 bg-gradient-to-br from-(--primary) to-(--secondary) clip-path-diagonal opacity-90" />
+              <div className="absolute top-0 right-0 w-24 h-24 bg-linear-to-br from-(--primary) to-(--secondary) clip-path-diagonal opacity-90" />
 
               <div className="relative h-56 sm:h-64 lg:h-72 p-4">
                 <div className="h-full rounded-2xl overflow-hidden shadow-inner">
@@ -87,7 +87,7 @@ const LatestBooks = () => {
 
                   <Link
                     to={`/book/${book._id}`}
-                    className="block text-center py-2.5 rounded-xl text-sm font-semibold text-white bg-gradient-to-r from-(--primary) to-(--secondary) hover:brightness-110 transition"
+                    className="block text-center py-2.5 rounded-xl text-sm font-semibold text-white bg-linear-to-r from-(--primary) to-(--secondary) hover:brightness-110 transition"
                   >
                     View Details
                   </Link>
