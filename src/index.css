@@ -24,7 +24,7 @@ body {
 :root {
   --primary: #2563eb;
   --secondary: #facc15;
-  --bg: #ffffff;
+  --bg: #fdf6ec;
   --text: #111827;
   --card-bg: #f9fafb;
   --hover: #e5e7eb;
@@ -86,13 +86,13 @@ a:hover {
   border: 0 !important;
   box-shadow: none !important;
   transform: none !important;
-}
+} */
 
 button:hover,
 .btn:hover {
   transform: scale(1.05);
   box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
-} */
+}
 
 .card {
   background-color: var(--card-bg);
