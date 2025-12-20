@@ -67,7 +67,7 @@ function MyOrders() {
 
             {orders.map((order) => {
               const isPending = order.status === 'pending'
-              const isCancelled = order.status === 'cancelled'
+              // const isCancelled = order.status === 'cancelled'
 
               return (
                 <div

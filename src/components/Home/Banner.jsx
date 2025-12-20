@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react'
 import { Link } from 'react-router-dom'
 import axios from 'axios'
 import LoadingSpinner from '../../components/Common/LoadingSpinner'
+import { FaBookOpen } from 'react-icons/fa6'
 
 function Banner() {
   const [books, setBooks] = useState([])
@@ -42,7 +43,13 @@ function Banner() {
 
   return (
     <section className="overflow-hidden relative w-full h-[80vh] lg:h-[90vh] flex items-center justify-center rounded-3xl">
-      <div className="absolute inset-0 bg-linear-to-r from-blue-600 to-yellow-400 opacity-80 z-0"></div>
+      <div
+        className="absolute inset-0 z-0"
+        style={{
+          background: `linear-gradient(to right, var(--primary), var(--secondary))`,
+          opacity: 0.8,
+        }}
+      ></div>
 
       {books.map((book, index) => (
         <div
@@ -61,9 +68,9 @@ function Banner() {
             <div className="flex justify-center lg:justify-start gap-4 mt-4">
               <Link
                 to="/books"
-                className="btn btn-primary btn-lg rounded-full text-black p-5! hover:scale-105 transition-transform"
+                className="flex items-center justify-center gap-2 px-5 sm:px-6 py-2 sm:py-3 rounded-xl bg-gradient-to-r from-[var(--primary)] to-[var(--secondary)] text-white font-semibold shadow-glow hover:scale-105 transition-transform w-full sm:w-auto"
               >
-                Explore All Books
+                <FaBookOpen /> Explore All Books
               </Link>
               <Link
                 to={`/book/${book._id}`}
@@ -84,8 +91,15 @@ function Banner() {
         </div>
       ))}
 
-      <div className="absolute -bottom-20 -right-20 w-64 h-64 bg-yellow-300 opacity-30 rounded-full filter blur-3xl animate-pulse-slow"></div>
-      <div className="absolute -top-16 -left-16 w-48 h-48 bg-blue-500 opacity-20 rounded-full filter blur-2xl animate-pulse-slow"></div>
+      <div
+        className="absolute -bottom-20 -right-20 w-64 h-64 rounded-full filter blur-3xl animate-pulse-slow"
+        style={{ backgroundColor: '#c67885', opacity: 0.3 }}
+      ></div>
+
+      <div
+        className="absolute -top-16 -left-16 w-48 h-48 rounded-full filter blur-2xl animate-pulse-slow"
+        style={{ backgroundColor: '#b35d6d', opacity: 0.2 }}
+      ></div>
     </section>
   )
 }
