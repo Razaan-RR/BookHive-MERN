@@ -1,5 +1,5 @@
 import { useParams } from 'react-router-dom'
-import { useQuery } from '@tanstack/react-query'
+import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query'
 import axios from 'axios'
 import Container from '../../components/Common/Container'
 import LoadingSpinner from '../../components/Common/LoadingSpinner'
@@ -11,24 +11,34 @@ import useAuth from '../../hooks/useAuth'
 function BookDetails() {
   const { id } = useParams()
   const { user } = useAuth()
+  const queryClient = useQueryClient()
 
   const [wishlisted, setWishlisted] = useState(false)
   const [isOpen, setIsOpen] = useState(false)
   const [rating, setRating] = useState(0)
   const [review, setReview] = useState('')
-  const [submittedReviews, setSubmittedReviews] = useState(
-    JSON.parse(localStorage.getItem(`reviews-${id}`)) || []
-  )
+  const [submittedReviews, setSubmittedReviews] = useState([])
 
-  const { data: book = {}, isLoading } = useQuery({
+  // Fetch book details
+  const { data: book = {}, isLoading: bookLoading } = useQuery({
     queryKey: ['book', id],
     queryFn: async () => {
-      const res = await axios(`${import.meta.env.VITE_API_URL}/book/${id}`)
+      const res = await axios.get(`${import.meta.env.VITE_API_URL}/book/${id}`)
       return res.data
     },
   })
 
-  // Fetch user's wishlist to check if this book is already wishlisted
+  // Fetch reviews from backend
+  const { isLoading: reviewsLoading } = useQuery({
+    queryKey: ['reviews', id],
+    queryFn: async () => {
+      const res = await axios.get(`${import.meta.env.VITE_API_URL}/reviews/${id}`)
+      setSubmittedReviews(res.data)
+      return res.data
+    },
+  })
+
+  // Fetch user's wishlist
   useEffect(() => {
     const fetchWishlist = async () => {
       if (!user?.email) return
@@ -38,20 +48,19 @@ function BookDetails() {
     fetchWishlist()
   }, [user, id])
 
-  if (isLoading) return <LoadingSpinner />
+  if (bookLoading || reviewsLoading) return <LoadingSpinner />
 
+  // Wishlist toggle
   const handleWishlist = async () => {
     if (!user?.email) return alert('Please login first')
 
     if (wishlisted) {
-      // Remove from wishlist
       await axios.post(`${import.meta.env.VITE_API_URL}/wishlist/remove`, {
         email: user.email,
         bookId: id,
       })
       setWishlisted(false)
     } else {
-      // Add to wishlist
       await axios.post(`${import.meta.env.VITE_API_URL}/wishlist/add`, {
         email: user.email,
         bookId: id,
@@ -60,14 +69,34 @@ function BookDetails() {
     }
   }
 
-  const handleSubmitReview = () => {
-    if (!rating) return
-    const newReview = { rating, review, id: Date.now() }
-    const updated = [...submittedReviews, newReview]
-    setSubmittedReviews(updated)
-    localStorage.setItem(`reviews-${id}`, JSON.stringify(updated))
-    setRating(0)
-    setReview('')
+  // Submit review to backend
+  const handleSubmitReview = async () => {
+    if (!rating || !review.trim()) return
+    if (!user) return alert('Please login to submit review')
+
+    const newReview = {
+      rating,
+      review,
+      user: {
+        name: user.name,
+        dp: user.dp || '/default-dp.jpg',
+        email: user.email,
+      },
+      id: Date.now(),
+    }
+
+    try {
+      await axios.post(`${import.meta.env.VITE_API_URL}/reviews/add`, {
+        bookId: id,
+        review: newReview,
+      })
+      setSubmittedReviews(prev => [...prev, newReview])
+      setRating(0)
+      setReview('')
+      queryClient.invalidateQueries(['reviews', id])
+    } catch (error) {
+      console.error('Failed to submit review:', error)
+    }
   }
 
   const { image, name, author, price, description } = book
@@ -107,10 +136,10 @@ function BookDetails() {
               <FaCartShopping className="text-[var(--primary)]" /> ৳ {price}
             </span>
 
-            <div className="flex flex-col sm:flex-row gap-3">
+            <div className="flex flex-col sm:flex-row gap-3 w-full sm:w-auto">
               <button
                 onClick={handleWishlist}
-                className={`flex items-center gap-2 px-5 sm:px-6 py-2 sm:py-3 rounded-xl font-semibold transition-all ${
+                className={`flex items-center justify-center gap-2 px-5 sm:px-6 py-2 sm:py-3 rounded-xl font-semibold transition-all w-full sm:w-auto ${
                   wishlisted
                     ? 'bg-[var(--secondary)]/30 border-2 border-[var(--secondary)] text-[var(--secondary)] shadow-glow'
                     : 'bg-[var(--primary)]/20 border-2 border-[var(--primary)] text-[var(--primary)] hover:bg-[var(--primary)] hover:text-white shadow-glow hover:shadow-lg'
@@ -122,7 +151,7 @@ function BookDetails() {
 
               <button
                 onClick={() => setIsOpen(true)}
-                className="flex items-center gap-2 px-5 sm:px-6 py-2 sm:py-3 rounded-xl bg-gradient-to-r from-[var(--primary)] to-[var(--secondary)] text-white font-semibold shadow-glow hover:scale-105 transition-transform"
+                className="flex items-center justify-center gap-2 px-5 sm:px-6 py-2 sm:py-3 rounded-xl bg-gradient-to-r from-[var(--primary)] to-[var(--secondary)] text-white font-semibold shadow-glow hover:scale-105 transition-transform w-full sm:w-auto"
               >
                 <FaCartShopping /> Order Now
               </button>
@@ -130,32 +159,33 @@ function BookDetails() {
           </div>
 
           <div className="mt-8 bg-[var(--card-bg)] p-4 sm:p-6 rounded-2xl border-2 border-[var(--secondary)]/30 shadow-inner-glow">
-            <h2 className="text-lg sm:text-xl font-bold mb-3 text-[var(--primary)] drop-shadow-glow">
+            <h2 className="text-lg sm:text-xl font-bold text-[var(--primary)] drop-shadow-glow">
               Reviews & Ratings
             </h2>
+            <p className='text-xs mb-3'>*Reviews can be given only by customers that have ordered this book*</p>
+
             <div className="flex items-center gap-1 mb-3">
               {[1, 2, 3, 4, 5].map(star => (
                 <FaStar
                   key={star}
                   className={`cursor-pointer transition-all ${
-                    rating >= star
-                      ? 'text-yellow-400 scale-110'
-                      : 'text-[var(--secondary)]/50'
+                    rating >= star ? 'text-yellow-400 scale-110' : 'text-[var(--secondary)]/50'
                   }`}
                   onClick={() => setRating(star)}
                 />
               ))}
             </div>
+
             <textarea
               value={review}
               onChange={e => setReview(e.target.value)}
               placeholder="Write your review..."
-              className="w-full p-3 rounded-xl border-2 border-(--secondary)/30 bg-(--card-bg) resize-none text-sm sm:text-base shadow-inner-glow focus:outline-none focus:ring-2 focus:ring-[var(--primary)] transition"
+              className="w-full p-3 rounded-xl border-2 border-[var(--secondary)]/30 bg-[var(--card-bg)] resize-none text-sm sm:text-base shadow-inner-glow focus:outline-none focus:ring-2 focus:ring-[var(--primary)] transition"
               rows={3}
             />
             <button
               onClick={handleSubmitReview}
-              className="mt-3 px-4 py-2 rounded-xl bg-linear-to-r from-(--primary) to-(--secondary) text-white font-semibold shadow-glow hover:scale-105 transition-transform"
+              className="mt-3 px-4 py-2 rounded-xl bg-gradient-to-r from-[var(--primary)] to-[var(--secondary)] text-white font-semibold shadow-glow hover:scale-105 transition-transform"
             >
               Submit Review
             </button>
@@ -167,15 +197,23 @@ function BookDetails() {
               {submittedReviews.map(r => (
                 <div
                   key={r.id}
-                  className="bg-(--secondary)/10 p-3 rounded-xl border shadow-glow flex flex-col gap-1"
+                  className="bg-[var(--secondary)]/10 p-3 rounded-xl border shadow-glow flex flex-col gap-2"
                 >
+                  <div className="flex items-center gap-2">
+                    <img
+                      src={r.user?.dp || '/default-dp.jpg'}
+                      alt={r.user?.name || 'User'}
+                      className="w-8 h-8 rounded-full object-cover"
+                    />
+                    <span className="font-semibold text-[var(--primary)]">
+                      {r.user?.name || 'Anonymous'}
+                    </span>
+                  </div>
                   <div className="flex items-center gap-1">
                     {[1, 2, 3, 4, 5].map(star => (
                       <FaStar
                         key={star}
-                        className={`text-yellow-400 ${
-                          r.rating >= star ? 'scale-110' : 'opacity-50'
-                        }`}
+                        className={`text-yellow-400 ${r.rating >= star ? 'scale-110' : 'opacity-50'}`}
                       />
                     ))}
                   </div>
@@ -191,6 +229,7 @@ function BookDetails() {
         isOpen={isOpen}
         closeModal={() => setIsOpen(false)}
         book={book}
+        user={user} 
       />
     </Container>
   )

@@ -1,7 +1,7 @@
 import { useEffect } from 'react'
 import { Link, useSearchParams } from 'react-router-dom'
 import axios from 'axios'
-import { IoBagCheckOutline } from 'react-icons/io5'
+import { FaBookOpen, FaCheckCircle } from 'react-icons/fa'
 
 const PaymentSuccess = () => {
   const [searchParams] = useSearchParams()
@@ -16,25 +16,62 @@ const PaymentSuccess = () => {
   }, [sessionId])
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gray-100">
-      <div className="bg-white p-10 rounded-lg shadow-lg text-center max-w-md">
-        <IoBagCheckOutline className="w-16 h-16 text-green-500 mx-auto mb-4" />
+    <div className="min-h-screen flex items-center justify-center" style={{ backgroundColor: 'var(--bg)' }}>
+      <div
+        className="p-6 sm:p-8 rounded-2xl text-center max-w-md w-full backdrop-blur-md border border-white/20 shadow-lg"
+        style={{
+          backgroundColor: 'rgba(255, 255, 255, 0.2)',
+          boxShadow: '0 8px 32px 0 rgba(0, 0, 0, 0.25)',
+          borderColor: 'rgba(255, 255, 255, 0.3)',
+        }}
+      >
+        <div className="flex justify-center mb-4">
+          <FaCheckCircle
+            className="w-20 h-20 animate-float"
+            style={{ color: 'var(--primary)' }}
+          />
+        </div>
 
-        <h1 className="text-3xl font-bold text-gray-800 mb-2">
-          Payment Successful
+        <h1 className="text-3xl font-bold mb-2" style={{ color: 'var(--text)' }}>
+          Payment Successful!
         </h1>
 
-        <p className="text-gray-600 mb-6">
-          Your book order has been placed successfully. You can track it from
-          your dashboard.
+        <p className="mb-6" style={{ color: 'var(--text)' }}>
+          Your order has been placed successfully. Thank you for shopping at
+          <span className="font-semibold" style={{ color: 'var(--secondary)' }}> BookHive</span>. You can track your order from your dashboard.
         </p>
 
-        <Link
-          to="/dashboard/my-orders"
-          className="inline-block bg-lime-500 text-white px-6 py-2 rounded-md font-semibold hover:bg-lime-600 transition"
-        >
-          Go to My Orders
-        </Link>
+        <div className="flex flex-col sm:flex-row justify-center gap-4">
+          <Link
+            to="/dashboard/my-orders"
+            className="flex-1 py-2 sm:py-3 rounded-lg font-semibold text-center transition"
+            style={{
+              backgroundColor: 'var(--primary)',
+              color: 'white',
+            }}
+          >
+            My Orders
+          </Link>
+
+          <Link
+            to="/"
+            className="flex-1 py-2 sm:py-3 rounded-lg font-semibold text-center transition"
+            style={{
+              border: '2px solid var(--secondary)',
+              color: 'var(--secondary)',
+              backgroundColor: 'transparent',
+            }}
+          >
+            Continue Shopping
+          </Link>
+        </div>
+
+        <div className="mt-6">
+          <FaBookOpen
+            className="w-10 h-10 mx-auto animate-pulse-slow"
+            style={{ color: 'var(--secondary)' }}
+          />
+        </div>
       </div>
     </div>
   )
