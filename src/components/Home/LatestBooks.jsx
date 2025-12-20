@@ -39,7 +39,7 @@ const LatestBooks = () => {
   return (
     <section className="py-16 px-4 sm:px-6 md:px-10 lg:px-20">
       <div className="max-w-7xl mx-auto text-center">
-        <span className="inline-block mb-6 px-6 py-2 rounded-full text-2xl sm:text-3xl font-bold bg-(--secondary)/25 text-(--text) shadow-sm">
+        <span className="inline-block mb-16 mt-10 px-6 py-2 rounded-full text-2xl sm:text-3xl font-bold bg-(--secondary)/25 text-(--text) shadow-sm">
           Latest Arrivals 📚
         </span>
 
