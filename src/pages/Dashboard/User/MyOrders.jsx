@@ -70,22 +70,12 @@ function MyOrders() {
       )
       return res.data
     },
-    onSuccess: (data, order) => {
+    onSuccess: (data) => {
       if (data?.url) {
-        // Optimistically mark order as paid
-        queryClient.setQueryData(['my-orders', user?.email], (old = []) =>
-          old.map((o) =>
-            o._id === order._id ? { ...o, paymentStatus: 'paid' } : o
-          )
-        )
         window.location.href = data.url
       } else {
-        alert('Failed to create checkout session. Please try again.')
+        alert('Failed to create checkout session.')
       }
-    },
-    onError: (err) => {
-      console.error(err)
-      alert('Error creating checkout session. Please try again.')
     },
   })
 
