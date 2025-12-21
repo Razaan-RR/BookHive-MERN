@@ -1,63 +1,54 @@
-import useAxiosSecure from '../../../hooks/useAxiosSecure'
-import { toast } from 'react-hot-toast'
+import axios from 'axios'
+import { toast } from 'react-toastify'
 
-const UserDataRow = ({ user, refetch }) => {
-  const axiosSecure = useAxiosSecure()
-
-  const handleMakeAdmin = async () => {
+function UserDataRow({ user, refetch }) {
+  const updateRole = async (role) => {
     try {
-      const res = await axiosSecure.patch(`/users/admin/${user.email}`)
-      if (res.data.modifiedCount > 0) {
-        toast.success(`${user.email} is now an Admin`)
+      const adminEmail =
+        localStorage.getItem('userEmail') || 'razaanreza0705@gmail.com'
+      if (!adminEmail) {
+        toast.error('Admin not logged in')
+        return
+      }
+
+      const res = await axios.patch(
+        `${import.meta.env.VITE_API_URL}/update-role`,
+        { adminEmail, email: user.email, role }
+      )
+
+      if (res.data.success) {
+        toast.success(`${user.email} is now ${role}`)
         refetch()
+      } else {
+        toast.error('Failed to update role')
       }
     } catch (err) {
-      console.log(err)
-      toast.error('Failed to make admin')
-    }
-  }
-
-  const handleMakeLibrarian = async () => {
-    try {
-      const res = await axiosSecure.patch(`/users/librarian/${user.email}`)
-      if (res.data.modifiedCount > 0) {
-        toast.success(`${user.email} is now a Librarian`)
-        refetch()
-      }
-    } catch (err) {
-      console.log(err)
-      toast.error('Failed to make librarian')
+      console.error(err)
+      toast.error('Failed to update role')
     }
   }
 
   return (
-    <tr>
-      <td className="px-5 py-5 border-b border-gray-200 bg-white text-sm">
-        {user?.email}
-      </td>
-
-      <td className="px-5 py-5 border-b border-gray-200 bg-white text-sm">
-        <span className="capitalize">{user?.role || 'user'}</span>
-      </td>
-
-      <td className="px-5 py-5 border-b border-gray-200 bg-white text-sm">
-        <div className="flex gap-2">
+    <tr className="hover:bg-gray-50">
+      <td className="px-4 py-2 border-b">{user.email}</td>
+      <td className="px-4 py-2 border-b">{user.role}</td>
+      <td className="px-4 py-2 border-b text-center space-x-2">
+        {user.role !== 'librarian' && (
           <button
-            disabled={user?.role === 'admin'}
-            onClick={handleMakeAdmin}
-            className="px-3 py-1 text-white bg-blue-600 rounded disabled:opacity-50"
-          >
-            Make Admin
-          </button>
-
-          <button
-            disabled={user?.role === 'librarian'}
-            onClick={handleMakeLibrarian}
-            className="px-3 py-1 text-white bg-green-600 rounded disabled:opacity-50"
+            className="bg-blue-500 hover:bg-blue-600 text-white px-3 py-1 rounded text-sm"
+            onClick={() => updateRole('librarian')}
           >
             Make Librarian
           </button>
-        </div>
+        )}
+        {user.role !== 'admin' && (
+          <button
+            className="bg-green-500 hover:bg-green-600 text-white px-3 py-1 rounded text-sm"
+            onClick={() => updateRole('admin')}
+          >
+            Make Admin
+          </button>
+        )}
       </td>
     </tr>
   )
