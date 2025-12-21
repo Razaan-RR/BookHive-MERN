@@ -83,7 +83,7 @@ const Navbar = () => {
                 WebkitTextFillColor: 'transparent',
               }}
             >
-              BookHive
+              <strong>BookHive</strong>
             </span>
           </Link>
         </div>

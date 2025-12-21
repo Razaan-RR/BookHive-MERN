@@ -45,20 +45,15 @@ const Login = () => {
 
   return (
     <div className="py-20 relative min-h-screen flex items-center justify-center overflow-hidden bg-bg px-4">
-      {/* Floating Background Orbs */}
       <div className="absolute -top-40 -left-40 w-96 h-96 bg-(--primary)/30 blur-[140px] rounded-full animate-pulse-slow" />
       <div className="absolute -bottom-40 -right-40 w-96 h-96 bg-(--secondary)/30 blur-[140px] rounded-full animate-pulse-slow" />
 
-      {/* WRAPPER FOR ICON + CARD */}
       <div className="relative z-10">
-        {/* FLOATING ICON (FIXED) */}
         <div className="absolute -top-8 left-1/2 -translate-x-1/2 w-16 h-16 rounded-2xl bg-(--primary) flex items-center justify-center shadow-lg z-20">
           <span className="text-3xl">📖</span>
         </div>
 
-        {/* CARD */}
         <div className="w-full max-w-5xl grid grid-cols-1 lg:grid-cols-2 rounded-3xl overflow-hidden shadow-2xl">
-          {/* LEFT SIDE */}
           <div
             className="hidden lg:flex flex-col justify-center px-10 py-12 backdrop-blur-xl bg-(--card-bg)/40 relative"
             style={{
@@ -82,13 +77,11 @@ const Login = () => {
             </div>
           </div>
 
-          {/* RIGHT SIDE */}
           <div className="relative backdrop-blur-xl bg-(--card-bg)/70 p-6 sm:p-8 animate-fadeInUp">
             <form
               onSubmit={handleSubmit(handleLogIn, onError)}
               className="space-y-5 mt-6"
             >
-              {/* Email */}
               <div>
                 <label className="flex items-center gap-2 mb-1 font-medium">
                   <FaEnvelope className="text-sm opacity-70" />
@@ -107,7 +100,6 @@ const Login = () => {
                 )}
               </div>
 
-              {/* Password */}
               <div>
                 <label className="flex items-center gap-2 mb-1 font-medium">
                   <FaLock className="text-sm opacity-70" />
@@ -133,14 +125,12 @@ const Login = () => {
                 )}
               </div>
 
-              {/* Forgot Password */}
               <div className="text-right">
                 <a className="text-sm hover:underline cursor-pointer">
                   Forgot password?
                 </a>
               </div>
 
-              {/* Login Button */}
               <button
                 type="submit"
                 className="btn w-full text-white font-semibold tracking-wide rounded-3xl"
@@ -150,17 +140,14 @@ const Login = () => {
               </button>
             </form>
 
-            {/* Divider */}
             <div className="my-6 flex items-center gap-3">
               <div className="flex-1 h-px bg-(--border)" />
               <span className="text-sm opacity-60">or</span>
               <div className="flex-1 h-px bg-(--border)" />
             </div>
 
-            {/* Social Login */}
             <SocialLogin />
 
-            {/* Register */}
             <p className="mt-6 text-center text-sm">
               New to BookHive?{' '}
               <Link

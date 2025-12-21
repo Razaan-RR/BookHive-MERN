@@ -22,7 +22,7 @@ function Footer() {
                   WebkitTextFillColor: 'transparent',
                 }}
               >
-                BookHive
+                <strong>BookHive</strong>
               </span>
             </div>
             <p className="text-sm text-text-secondary max-w-xs">
