@@ -2,6 +2,8 @@ import { Dialog, DialogPanel, DialogTitle } from '@headlessui/react'
 import useAuth from '../../hooks/useAuth'
 import { useForm } from 'react-hook-form'
 import axios from 'axios'
+import { toast } from 'react-hot-toast'
+import { useEffect } from 'react'
 
 const BookPurchaseModal = ({ isOpen, closeModal, book }) => {
   const { user } = useAuth()
@@ -14,37 +16,55 @@ const BookPurchaseModal = ({ isOpen, closeModal, book }) => {
     reset,
   } = useForm({
     defaultValues: {
-      name: user?.displayName || '',
-      email: user?.email || '',
+      name: '',
+      email: '',
       phone: '',
       address: '',
     },
   })
 
+  useEffect(() => {
+    if (user) {
+      reset({
+        name: user.displayName || user.name || '',
+        email: user.email || '',
+        phone: '',
+        address: '',
+      })
+    }
+  }, [user, reset])
+
   const onSubmit = async (data) => {
-    const paymentInfo = {
+    if (!data.phone || !data.address)
+      return toast.error('Please fill all fields')
+
+    const orderData = {
       bookId: _id,
-      name,
+      name, 
       price,
-      description,
-      image,
-      customer: {
+      customer: data.email, 
+      customerInfo: {
         name: data.name,
-        email: data.email,
         phone: data.phone,
         address: data.address,
       },
+      status: 'pending',
+      paymentStatus: 'unpaid',
     }
 
     try {
-      const { data: response } = await axios.post(
-        `${import.meta.env.VITE_API_URL}/create-book-checkout-session`,
-        paymentInfo
-      )
-      window.location.href = response.url
-      reset()
+      await axios.post(`${import.meta.env.VITE_API_URL}/orders`, orderData)
+      toast.success('Order placed successfully!')
+      reset({
+        name: user.displayName || user.name || '',
+        email: user.email || '',
+        phone: '',
+        address: '',
+      })
+      closeModal()
     } catch (error) {
-      console.error('Payment session error:', error)
+      console.error('Failed to place order:', error)
+      toast.error('Failed to place order. Please try again.')
     }
   }
 
@@ -55,10 +75,8 @@ const BookPurchaseModal = ({ isOpen, closeModal, book }) => {
       className="relative z-50"
       onClose={closeModal}
     >
-      {/* Overlay */}
       <div className="fixed inset-0 bg-black/40 backdrop-blur-sm" />
 
-      {/* Modal */}
       <div className="fixed inset-0 flex items-center justify-center p-4">
         <DialogPanel className="
           w-full max-w-md 
@@ -71,7 +89,6 @@ const BookPurchaseModal = ({ isOpen, closeModal, book }) => {
             Place Your Order
           </DialogTitle>
 
-          {/* Book Info */}
           {book && (
             <div className="flex gap-3 items-center mb-3">
               <img
@@ -80,15 +97,17 @@ const BookPurchaseModal = ({ isOpen, closeModal, book }) => {
                 className="w-16 h-20 object-cover rounded-lg border border-white/20 shadow-inner"
               />
               <div className="flex flex-col">
-                <h3 className="text-sm sm:text-base font-semibold text-white/90">{name}</h3>
-                <p className="text-sm text-[var(--secondary)] font-bold">৳ {price}</p>
+                <h3 className="text-sm sm:text-base font-semibold text-white/90">
+                  {name}
+                </h3>
+                <p className="text-sm text-[var(--secondary)] font-bold">
+                  ৳ {price}
+                </p>
               </div>
             </div>
           )}
 
-          {/* Form */}
           <form className="flex flex-col gap-3" onSubmit={handleSubmit(onSubmit)}>
-            {/* Name & Email (Read-only) */}
             <input
               type="text"
               readOnly
@@ -104,7 +123,6 @@ const BookPurchaseModal = ({ isOpen, closeModal, book }) => {
               className="input glass-input cursor-not-allowed"
             />
 
-            {/* Phone */}
             <input
               type="text"
               {...register('phone', { required: 'Phone number is required' })}
@@ -113,7 +131,6 @@ const BookPurchaseModal = ({ isOpen, closeModal, book }) => {
             />
             {errors.phone && <span className="text-red-500 text-sm">{errors.phone.message}</span>}
 
-            {/* Address */}
             <input
               type="text"
               {...register('address', { required: 'Address is required' })}
@@ -122,7 +139,6 @@ const BookPurchaseModal = ({ isOpen, closeModal, book }) => {
             />
             {errors.address && <span className="text-red-500 text-sm">{errors.address.message}</span>}
 
-            {/* Submit */}
             <button
               type="submit"
               className="

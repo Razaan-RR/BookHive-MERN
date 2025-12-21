@@ -31,8 +31,8 @@ function Invoices() {
       className="relative py-16 overflow-hidden"
       style={{ backgroundColor: 'var(--bg)' }}
     >
-      <div className="absolute -top-40 -left-40 w-96 h-96 bg-(--primary)/30 blur-[140px] rounded-full animate-pulse-slow" />
-      <div className="absolute -bottom-40 -right-40 w-96 h-96 bg-(--secondary)/30 blur-[140px] rounded-full animate-pulse-slow" />
+      <div className="absolute -top-40 -left-40 w-96 h-96 bg-(--secondary)/20 blur-[160px] rounded-full pointer-events-none" />
+      <div className="absolute -bottom-40 -right-40 w-96 h-96 bg-(--primary)/20 blur-[160px] rounded-full pointer-events-none" />
 
       <Container>
         <div className="relative animate-fadeInUp">

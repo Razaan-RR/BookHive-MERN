@@ -19,7 +19,6 @@ function BookDetails() {
   const [review, setReview] = useState('')
   const [submittedReviews, setSubmittedReviews] = useState([])
 
-  // Fetch book details
   const { data: book = {}, isLoading: bookLoading } = useQuery({
     queryKey: ['book', id],
     queryFn: async () => {
@@ -28,7 +27,6 @@ function BookDetails() {
     },
   })
 
-  // Fetch reviews from backend
   const { isLoading: reviewsLoading } = useQuery({
     queryKey: ['reviews', id],
     queryFn: async () => {
@@ -38,7 +36,6 @@ function BookDetails() {
     },
   })
 
-  // Fetch user's wishlist
   useEffect(() => {
     const fetchWishlist = async () => {
       if (!user?.email) return
@@ -50,7 +47,6 @@ function BookDetails() {
 
   if (bookLoading || reviewsLoading) return <LoadingSpinner />
 
-  // Wishlist toggle
   const handleWishlist = async () => {
     if (!user?.email) return alert('Please login first')
 
@@ -69,7 +65,6 @@ function BookDetails() {
     }
   }
 
-  // Submit review to backend
   const handleSubmitReview = async () => {
     if (!rating || !review.trim()) return
     if (!user) return alert('Please login to submit review')

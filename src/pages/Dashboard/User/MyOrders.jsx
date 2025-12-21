@@ -28,7 +28,65 @@ function MyOrders() {
   const cancelOrder = useMutation({
     mutationFn: (id) =>
       axios.patch(`${import.meta.env.VITE_API_URL}/orders/cancel/${id}`),
-    onSuccess: () => queryClient.invalidateQueries(['my-orders']),
+    onMutate: async (id) => {
+      await queryClient.cancelQueries(['my-orders', user?.email])
+
+      const previousOrders = queryClient.getQueryData([
+        'my-orders',
+        user?.email,
+      ])
+
+      queryClient.setQueryData(['my-orders', user?.email], (old = []) =>
+        old.map((order) =>
+          order._id === id ? { ...order, status: 'cancelled' } : order
+        )
+      )
+
+      return { previousOrders }
+    },
+    onError: (err, id, context) => {
+      queryClient.setQueryData(
+        ['my-orders', user?.email],
+        context.previousOrders
+      )
+    },
+    onSettled: () => {
+      queryClient.invalidateQueries(['my-orders', user?.email])
+    },
+  })
+
+  const payNow = useMutation({
+    mutationFn: async (order) => {
+      const res = await axios.post(
+        `${import.meta.env.VITE_API_URL}/create-book-checkout-session`,
+        {
+          orderId: order._id,
+          name: order.name,
+          price: order.price,
+          description: `Payment for ${order.name}`,
+          customer: { email: user.email },
+          image: order.image || undefined,
+        }
+      )
+      return res.data
+    },
+    onSuccess: (data, order) => {
+      if (data?.url) {
+        // Optimistically mark order as paid
+        queryClient.setQueryData(['my-orders', user?.email], (old = []) =>
+          old.map((o) =>
+            o._id === order._id ? { ...o, paymentStatus: 'paid' } : o
+          )
+        )
+        window.location.href = data.url
+      } else {
+        alert('Failed to create checkout session. Please try again.')
+      }
+    },
+    onError: (err) => {
+      console.error(err)
+      alert('Error creating checkout session. Please try again.')
+    },
   })
 
   if (isLoading) return <LoadingSpinner />
@@ -67,7 +125,6 @@ function MyOrders() {
 
             {orders.map((order) => {
               const isPending = order.status === 'pending'
-              // const isCancelled = order.status === 'cancelled'
 
               return (
                 <div
@@ -118,14 +175,18 @@ function MyOrders() {
                             Cancel
                           </button>
 
-                          {order.paymentStatus !== 'paid' && (
-                            <a
-                              href={`/payment/${order._id}`}
+                          {order.paymentStatus !== 'paid' ? (
+                            <button
+                              onClick={() => payNow.mutate(order)}
                               className="flex items-center gap-2 px-5 py-2 rounded-xl bg-(--primary) text-white hover:scale-105 transition"
                             >
                               <FaCreditCard />
                               Pay Now
-                            </a>
+                            </button>
+                          ) : (
+                            <span className="px-5 py-2 rounded-xl bg-green-50 text-green-700 flex items-center">
+                              Paid
+                            </span>
                           )}
                         </>
                       )}
