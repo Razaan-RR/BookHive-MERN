@@ -24,6 +24,48 @@ const Register = () => {
   if (loading) return <LoadingSpinner />
   if (user) return <Navigate to={from} replace={true} />
 
+  // const handleRegistration = async (data) => {
+  //   try {
+  //     if (!data.photo || !data.photo[0]) {
+  //       toast.error('Please upload a photo')
+  //       return
+  //     }
+
+  //     const imageFile = data.photo[0]
+  //     const formData = new FormData()
+  //     formData.append('image', imageFile)
+
+  //     const img_API_URL = `https://api.imgbb.com/1/upload?expiration=600&key=${
+  //       import.meta.env.VITE_IMAGE_HOST_KEY
+  //     }`
+
+  //     const imgRes = await axios.post(img_API_URL, formData)
+  //     const photoURL = imgRes.data.data.url || imgRes.data.data.display_url
+
+  //     await registerUser(data.email, data.password)
+
+  //     await saveOrUpdateUser({
+  //       name: data.name,
+  //       email: data.email,
+  //       photo: photoURL,
+  //     })
+
+  //     // await updateUserProfile({
+  //     //   displayName: data.name,
+  //     //   photoURL,
+  //     // })
+
+  //     await updateUserProfile(data.name, photoURL)
+
+  //     toast.success('Congrats! Registration successful.')
+  //     setTimeout(() => {
+  //       navigate(from, { replace: true })
+  //     }, 800)
+  //   } catch (error) {
+  //     toast.error(`Sorry! Registration failed: ${error.message}`)
+  //   }
+  // }
+
   const handleRegistration = async (data) => {
     try {
       if (!data.photo || !data.photo[0]) {
@@ -44,16 +86,8 @@ const Register = () => {
 
       await registerUser(data.email, data.password)
 
-      await saveOrUpdateUser({
-        name: data.name,
-        email: data.email,
-        photo: photoURL,
-      })
-
-      await updateUserProfile({
-        displayName: data.name,
-        photoURL,
-      })
+      // ✅ THIS IS THE FIX
+      await updateUserProfile(data.name, photoURL)
 
       toast.success('Congrats! Registration successful.')
       setTimeout(() => {
@@ -136,9 +170,7 @@ const Register = () => {
                   className="w-full"
                 />
                 {errors.photo && (
-                  <p className="text-sm text-red-500 mt-1">
-                    Photo is required
-                  </p>
+                  <p className="text-sm text-red-500 mt-1">Photo is required</p>
                 )}
               </div>
 
