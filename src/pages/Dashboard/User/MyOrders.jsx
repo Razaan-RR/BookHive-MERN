@@ -83,7 +83,7 @@ function MyOrders() {
 
   return (
     <section
-      className="relative py-16 overflow-hidden"
+      className="relative py-12 sm:py-16 overflow-hidden"
       style={{ backgroundColor: 'var(--bg)' }}
     >
       <div className="absolute -top-40 -left-40 w-96 h-96 bg-(--secondary)/30 blur-[140px] rounded-full animate-pulse-slow" />
@@ -91,25 +91,27 @@ function MyOrders() {
 
       <Container>
         <div className="relative animate-fadeInUp">
-          <div className="mb-14 text-center px-4">
-            <span className="inline-flex items-center gap-2 mb-5 px-6 py-2 rounded-full text-lg sm:text-xl font-bold bg-(--secondary)/25">
+          <div className="mb-10 sm:mb-14 text-center px-2 sm:px-4">
+            <span className="inline-flex items-center gap-2 mb-4 sm:mb-5 px-5 py-2 rounded-full text-base sm:text-lg font-bold bg-(--secondary)/25">
               My Orders <span>📦</span>
             </span>
 
-            <h1 className="text-3xl sm:text-4xl font-extrabold leading-tight">
+            <h1 className="text-2xl sm:text-3xl md:text-4xl font-extrabold leading-tight">
               Track Your Reading Journey
             </h1>
 
-            <p className="opacity-70 mt-3 max-w-xl mx-auto">
+            <p className="opacity-70 mt-3 max-w-xl mx-auto text-sm sm:text-base">
               Manage your orders, complete payments, or cancel pending books —
               all in one place.
             </p>
           </div>
 
-          <div className="grid gap-6">
+          <div className="grid gap-5 sm:gap-6">
             {orders.length === 0 && (
-              <div className="card text-center py-16">
-                <p className="opacity-70 text-lg">No orders found</p>
+              <div className="card text-center py-14 sm:py-16">
+                <p className="opacity-70 text-base sm:text-lg">
+                  No orders found
+                </p>
               </div>
             )}
 
@@ -119,28 +121,28 @@ function MyOrders() {
               return (
                 <div
                   key={order._id}
-                  className="group relative rounded-3xl border border-(--border) bg-(--card-bg)/80 backdrop-blur-xl shadow-lg p-6 transition-all duration-300 hover:-translate-y-1 hover:shadow-2xl"
+                  className="group relative rounded-3xl border border-(--border) bg-(--card-bg)/80 backdrop-blur-xl shadow-lg p-5 sm:p-6 transition-all duration-300 hover:-translate-y-1 hover:shadow-2xl"
                 >
                   <div className="absolute inset-0 rounded-3xl bg-gradient-to-r from-(--primary)/10 to-(--secondary)/10 opacity-0 group-hover:opacity-100 transition" />
 
-                  <div className="relative z-10 flex flex-col md:flex-row md:items-center md:justify-between gap-6">
+                  <div className="relative z-10 flex flex-col gap-5 md:flex-row md:items-center md:justify-between">
                     <div className="flex items-start gap-4">
-                      <div className="w-12 h-12 rounded-2xl bg-(--primary)/15 flex items-center justify-center text-(--primary) text-xl shrink-0">
+                      <div className="w-11 h-11 sm:w-12 sm:h-12 rounded-2xl bg-(--primary)/15 flex items-center justify-center text-(--primary) text-lg sm:text-xl shrink-0">
                         <FaBook />
                       </div>
 
                       <div>
-                        <h3 className="font-semibold text-lg leading-snug">
+                        <h3 className="font-semibold text-base sm:text-lg leading-snug">
                           {order.name}
                         </h3>
 
-                        <div className="flex items-center gap-2 mt-2 text-sm opacity-70">
+                        <div className="flex items-center gap-2 mt-2 text-xs sm:text-sm opacity-70">
                           <FaCalendarAlt />
                           {new Date(order.orderDate).toLocaleDateString()}
                         </div>
 
                         <span
-                          className={`inline-block mt-3 px-4 py-1 rounded-full text-sm font-medium
+                          className={`inline-block mt-3 px-4 py-1 rounded-full text-xs sm:text-sm font-medium
                           ${
                             order.status === 'paid'
                               ? 'bg-green-100 text-green-700'
@@ -154,12 +156,12 @@ function MyOrders() {
                       </div>
                     </div>
 
-                    <div className="flex flex-wrap gap-3 md:justify-end">
+                    <div className="flex flex-col sm:flex-row gap-3 sm:justify-end">
                       {isPending && (
                         <>
                           <button
                             onClick={() => cancelOrder.mutate(order._id)}
-                            className="flex items-center gap-2 px-5 py-2 rounded-xl bg-red-50 text-red-600 hover:bg-red-100 transition"
+                            className="flex items-center justify-center gap-2 px-4 sm:px-5 py-2 rounded-xl bg-red-50 text-red-600 hover:bg-red-100 transition text-sm"
                           >
                             <FaTimesCircle />
                             Cancel
@@ -168,13 +170,13 @@ function MyOrders() {
                           {order.paymentStatus !== 'paid' ? (
                             <button
                               onClick={() => payNow.mutate(order)}
-                              className="flex items-center gap-2 px-5 py-2 rounded-xl bg-(--primary) text-white hover:scale-105 transition"
+                              className="flex items-center justify-center gap-2 px-4 sm:px-5 py-2 rounded-xl bg-(--primary) text-white hover:scale-105 transition text-sm"
                             >
                               <FaCreditCard />
                               Pay Now
                             </button>
                           ) : (
-                            <span className="px-5 py-2 rounded-xl bg-green-50 text-green-700 flex items-center">
+                            <span className="px-4 sm:px-5 py-2 rounded-xl bg-green-50 text-green-700 flex items-center justify-center text-sm">
                               Paid
                             </span>
                           )}
@@ -182,7 +184,7 @@ function MyOrders() {
                       )}
 
                       {!isPending && (
-                        <span className="opacity-50 text-sm flex items-center">
+                        <span className="opacity-50 text-xs sm:text-sm flex items-center justify-center">
                           No actions available
                         </span>
                       )}

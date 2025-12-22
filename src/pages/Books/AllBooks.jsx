@@ -41,7 +41,7 @@ function AllBooks() {
 
   return (
     <Container>
-      <div className="flex flex-col sm:flex-row items-center justify-between gap-4 py-8">
+      <div className="flex flex-col sm:flex-row items-stretch sm:items-center justify-between gap-3 sm:gap-4 py-6 sm:py-8">
         <input
           type="text"
           placeholder="Search by book name..."
@@ -52,21 +52,21 @@ function AllBooks() {
             color: 'var(--text)',
             '::placeholder': { color: placeholderColor },
           }}
-          className="w-full sm:w-80 px-4 py-2 rounded-lg border-2 focus:outline-none focus:ring-2 focus:ring-(--primary) transition-all placeholder-(--secondary)"
+          className="w-full sm:w-80 px-4 py-2.5 rounded-lg border-2 focus:outline-none focus:ring-2 focus:ring-(--primary) transition-all placeholder-(--secondary)"
         />
 
         <select
           value={sortOrder}
           onChange={(e) => setSortOrder(e.target.value)}
           style={{ borderColor }}
-          className="w-10 sm:w-60 px-4 py-2 rounded-lg border-2 focus:outline-none focus:ring-2 focus:ring-(--primary) transition-all text-text"
+          className="w-full sm:w-60 px-4 py-2.5 rounded-lg border-2 focus:outline-none focus:ring-2 focus:ring-(--primary) transition-all text-text"
         >
           <option value="asc">Price: Low → High</option>
           <option value="desc">Price: High → Low</option>
         </select>
       </div>
 
-      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-8">
+      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-5 sm:gap-6 lg:gap-8">
         {filteredBooks.length > 0 ? (
           filteredBooks.map((book) => <Card key={book._id} book={book} />)
         ) : (

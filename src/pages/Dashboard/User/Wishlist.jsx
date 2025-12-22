@@ -27,7 +27,7 @@ function Wishlist() {
 
   return (
     <section
-      className="relative min-h-screen py-16 overflow-hidden"
+      className="relative min-h-screen py-12 sm:py-16 overflow-hidden"
       style={{ backgroundColor: 'var(--bg)' }}
     >
       <div className="absolute -top-40 -left-40 w-96 h-96 bg-(--secondary)/20 blur-[160px] rounded-full pointer-events-none" />
@@ -35,27 +35,27 @@ function Wishlist() {
 
       <Container>
         <div className="relative animate-fadeInUp">
-          <div className="mb-14 text-center px-4">
-            <span className="inline-flex items-center gap-2 mb-5 px-6 py-2 rounded-full text-lg sm:text-xl font-bold bg-(--secondary)/20">
+          <div className="mb-10 sm:mb-14 text-center px-2 sm:px-4">
+            <span className="inline-flex items-center gap-2 mb-4 sm:mb-5 px-5 py-2 rounded-full text-base sm:text-lg font-bold bg-(--secondary)/20">
               My Wishlist <FaHeart className="text-red-500" />
             </span>
 
-            <h1 className="text-3xl sm:text-4xl font-extrabold">
+            <h1 className="text-2xl sm:text-3xl md:text-4xl font-extrabold">
               Books You Love
             </h1>
 
-            <p className="opacity-70 mt-3 max-w-xl mx-auto">
+            <p className="opacity-70 mt-3 max-w-xl mx-auto text-sm sm:text-base">
               Save books you adore and come back anytime to read or buy them.
             </p>
           </div>
 
           {!loading && books.length === 0 && (
-            <div className="relative mx-auto max-w-lg rounded-3xl bg-white/60 dark:bg-white/5 backdrop-blur-xl border border-white/30 dark:border-white/10 shadow-xl py-20 px-6 text-center">
-              <FaHeartCrack className="mx-auto text-6xl text-(--secondary) mb-6 animate-float" />
-              <h3 className="text-xl font-semibold mb-2">
+            <div className="relative mx-auto max-w-md sm:max-w-lg rounded-3xl bg-white/60 dark:bg-white/5 backdrop-blur-xl border border-white/30 dark:border-white/10 shadow-xl py-16 sm:py-20 px-6 text-center">
+              <FaHeartCrack className="mx-auto text-5xl sm:text-6xl text-(--secondary) mb-6 animate-float" />
+              <h3 className="text-lg sm:text-xl font-semibold mb-2">
                 Your wishlist is empty
               </h3>
-              <p className="opacity-70">
+              <p className="opacity-70 text-sm sm:text-base">
                 Start adding your favorite books and build your personal
                 collection.
               </p>
@@ -63,7 +63,7 @@ function Wishlist() {
           )}
 
           {books.length > 0 && (
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-10">
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 sm:gap-8 lg:gap-10">
               {books.map((book) => (
                 <div
                   key={book._id}
@@ -80,7 +80,7 @@ function Wishlist() {
                 >
                   <div className="absolute inset-0 rounded-3xl bg-gradient-to-br from-white/20 to-transparent opacity-0 group-hover:opacity-100 transition" />
 
-                  <div className="relative z-10 p-4">
+                  <div className="relative z-10 p-3 sm:p-4">
                     <Card book={book} />
                   </div>
                 </div>
