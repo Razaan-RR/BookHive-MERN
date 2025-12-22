@@ -2,10 +2,11 @@ import React from 'react'
 import useAuth from '../../hooks/useAuth'
 import { toast, ToastContainer } from 'react-toastify'
 import { saveOrUpdateUser } from '../../utils/index'
-import { Navigate } from 'react-router-dom'
+import { useNavigate } from 'react-router-dom'
 
 const SocialLogin = () => {
   const { signInGoogle } = useAuth()
+  const navigate = useNavigate()
 
   const handleGoogleSignIn = async () => {
     try {
@@ -19,7 +20,7 @@ const SocialLogin = () => {
       })
 
       toast.success('Logged in with Google successfully.')
-      Navigate('/')
+      navigate('/', { replace: true })
     } catch (error) {
       console.log(error)
       toast.error(`Google Sign-In failed: ${error.message}`)

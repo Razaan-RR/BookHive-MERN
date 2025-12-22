@@ -31,7 +31,7 @@ const Login = () => {
       })
       toast.success('Welcome back to BookHive!')
       setTimeout(() => {
-        navigate(from, { replace: true })
+        navigate('/', { replace: true })
       }, 800)
     } catch (error) {
       toast.error(`Login failed: ${error.message}`)

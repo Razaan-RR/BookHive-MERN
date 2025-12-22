@@ -5,6 +5,8 @@ import FeaturedCollections from '../../../components/Home/FeaturedCollections'
 import LatestBooks from '../../../components/Home/LatestBooks'
 import Testimonials from '../../../components/Home/Testimonials'
 import WhyChooseBookHive from '../../../components/Home/WhyChooseBookHive'
+import { useEffect, useState } from 'react'
+import Coverage from '../../../components/Home/Coverage'
 
 const slideLeft = {
   hidden: { opacity: 0, x: -80 },
@@ -17,8 +19,19 @@ const slideRight = {
 }
 
 function Home() {
+  const [centerLocations, setCenterLocations] = useState([])
+
+  useEffect(() => {
+    fetch('/locations.json')
+      .then((res) => res.json())
+      .then((data) => {
+        console.log('Loaded JSON:', data)
+        setCenterLocations(data)
+      })
+  }, [])
+
   return (
-    <div className='overflow-hidden'>
+    <div className="overflow-hidden">
       <Banner />
 
       <motion.div
@@ -30,6 +43,8 @@ function Home() {
       >
         <LatestBooks />
       </motion.div>
+
+      <Coverage centerLocations={centerLocations} />
 
       <motion.div
         variants={slideRight}

@@ -1,0 +1,102 @@
+[
+  {
+    "region": "Dhaka",
+    "district": "Dhaka",
+    "city": "Dhaka",
+    "covered_area": ["Uttara", "Dhanmondi", "Mirpur", "Mohammadpur"],
+    "status": "active",
+    "flowchart": "https://example.com/dhaka-flowchart.png",
+    "longitude": 90.4125,
+    "latitude": 23.8103
+  },
+  {
+    "region": "Dhaka",
+    "district": "Faridpur",
+    "city": "Faridpur",
+    "covered_area": ["Goalanda", "Boalmari", "Bhanga"],
+    "status": "active",
+    "flowchart": "https://example.com/faridpur-flowchart.png",
+    "longitude": 89.8333,
+    "latitude": 23.6
+  },
+  {
+    "region": "Dhaka",
+    "district": "Gazipur",
+    "city": "Gazipur",
+    "covered_area": ["Tongi", "Kaliakair", "Sreepur"],
+    "status": "active",
+    "flowchart": "https://example.com/gazipur-flowchart.png",
+    "longitude": 90.4203,
+    "latitude": 23.9999
+  },
+  {
+    "region": "Dhaka",
+    "district": "Gopalganj",
+    "city": "Gopalganj",
+    "covered_area": ["Tungipara", "Kotalipara", "Kashiani"],
+    "status": "active",
+    "flowchart": "https://example.com/gopalganj-flowchart.png",
+    "longitude": 89.8266,
+    "latitude": 23.0052
+  },
+  {
+    "region": "Dhaka",
+    "district": "Kishoreganj",
+    "city": "Kishoreganj",
+    "covered_area": ["Bajitpur", "Kuliarchar", "Pakundia"],
+    "status": "active",
+    "flowchart": "https://example.com/kishoreganj-flowchart.png",
+    "longitude": 90.7829,
+    "latitude": 24.426
+  },
+  {
+    "region": "Dhaka",
+    "district": "Madaripur",
+    "city": "Madaripur",
+    "covered_area": ["Rajoir", "Kalkini", "Shibchar"],
+    "status": "active",
+    "flowchart": "https://example.com/madaripur-flowchart.png",
+    "longitude": 90.2,
+    "latitude": 23.17
+  },
+  {
+    "region": "Dhaka",
+    "district": "Manikganj",
+    "city": "Manikganj",
+    "covered_area": ["Saturia", "Shivalaya", "Ghior"],
+    "status": "active",
+    "flowchart": "https://example.com/manikganj-flowchart.png",
+    "longitude": 89.9767,
+    "latitude": 23.8617
+  },
+  {
+    "region": "Dhaka",
+    "district": "Munshiganj",
+    "city": "Munshiganj",
+    "covered_area": ["Sreenagar", "Lohajang", "Sirajdikhan"],
+    "status": "active",
+    "flowchart": "https://example.com/munshiganj-flowchart.png",
+    "longitude": 90.5305,
+    "latitude": 23.55
+  },
+  {
+    "region": "Dhaka",
+    "district": "Narayanganj",
+    "city": "Narayanganj",
+    "covered_area": ["Fatullah", "Siddhirganj", "Rupganj"],
+    "status": "active",
+    "flowchart": "https://example.com/narayanganj-flowchart.png",
+    "longitude": 90.5,
+    "latitude": 23.62
+  },
+  {
+    "region": "Dhaka",
+    "district": "Narsingdi",
+    "city": "Narsingdi",
+    "covered_area": ["Palash", "Belabo", "Raipura"],
+    "status": "active",
+    "flowchart": "https://example.com/narsingdi-flowchart.png",
+    "longitude": 90.7156,
+    "latitude": 23.9226
+  }
+]

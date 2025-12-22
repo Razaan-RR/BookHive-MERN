@@ -68,16 +68,11 @@ function Banner() {
             <div className="flex justify-center lg:justify-start gap-4 mt-4">
               <Link
                 to="/books"
-                className="flex items-center justify-center gap-2 px-5 sm:px-6 py-2 sm:py-3 rounded-xl bg-gradient-to-r from-[var(--primary)] to-[var(--secondary)] text-white font-semibold shadow-glow hover:scale-105 transition-transform w-full sm:w-auto"
+                className="ml-40 flex items-center justify-center gap-2 px-5 sm:px-6 py-2 sm:py-3 rounded-xl bg-gradient-to-r from-[var(--primary)] to-[var(--secondary)] text-white font-semibold shadow-glow hover:scale-105 transition-transform w-full sm:w-auto"
               >
                 <FaBookOpen /> Explore All Books
               </Link>
-              <Link
-                to={`/book/${book._id}`}
-                className="btn btn-outline btn-lg rounded-full text-white p-5! border-white hover:bg-white hover:text-blue-600 transition-all"
-              >
-                View Details
-              </Link>
+              
             </div>
           </div>
 
