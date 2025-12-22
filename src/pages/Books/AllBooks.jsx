@@ -18,16 +18,19 @@ function AllBooks() {
   })
 
   const filteredBooks = useMemo(() => {
-    let result = books
+    let result = books.filter((book) => book.status === 'published')
+
     if (search.trim()) {
       const lowerSearch = search.toLowerCase()
       result = result.filter((book) =>
         book.name.toLowerCase().includes(lowerSearch)
       )
     }
+
     result = result.sort((a, b) =>
       sortOrder === 'asc' ? a.price - b.price : b.price - a.price
     )
+
     return result
   }, [books, search, sortOrder])
 
