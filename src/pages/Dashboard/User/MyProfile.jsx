@@ -1,24 +1,67 @@
-import useAuth from '../../../hooks/useAuth'
-import { useState } from 'react'
-import Container from '../../../components/Common/Container'
+import { useState, useEffect } from 'react'
 import { FaUserCircle } from 'react-icons/fa'
+import { getStorage, ref, uploadBytes, getDownloadURL } from 'firebase/storage'
+import { toast, Toaster } from 'react-hot-toast'
+import useAuth from '../../../hooks/useAuth'
+import Container from '../../../components/Common/Container'
 
 const MyProfile = () => {
   const { user, updateUserProfile } = useAuth()
-  const [name, setName] = useState(user?.displayName || '')
-  const [photo, setPhoto] = useState(null)
+  const [name, setName] = useState('')
+  const [photo, setPhoto] = useState(null) // file selected
+  const [preview, setPreview] = useState('') // preview URL
+  const [loading, setLoading] = useState(false)
+
+  // Initialize local states when user loads
+  useEffect(() => {
+    if (user) {
+      setName(user.displayName || '')
+      setPreview(user.photoURL || 'https://i.ibb.co/MBtjqXQ/no-avatar.gif')
+    }
+  }, [user])
+
+  // Update preview whenever a new file is selected
+  useEffect(() => {
+    if (!photo) return
+    const objectUrl = URL.createObjectURL(photo)
+    setPreview(objectUrl)
+    return () => URL.revokeObjectURL(objectUrl)
+  }, [photo])
 
   const handleSubmit = async (e) => {
     e.preventDefault()
     if (!name && !photo) return
-    await updateUserProfile(name, photo)
+    setLoading(true)
+
+    try {
+      let photoURL = user?.photoURL || null
+
+      // Upload new photo if selected
+      if (photo) {
+        const storage = getStorage()
+        const photoRef = ref(storage, `profileImages/${user.uid}-${Date.now()}`)
+        await uploadBytes(photoRef, photo)
+        photoURL = await getDownloadURL(photoRef)
+      }
+
+      // Update Firebase and backend
+      await updateUserProfile(name, photoURL)
+
+      // Update local state immediately for instant UI update
+      setPhoto(null)
+      setPreview(photoURL)
+      toast.success('Profile updated successfully!')
+    } catch (err) {
+      console.error(err)
+      toast.error('Failed to update profile')
+    } finally {
+      setLoading(false)
+    }
   }
 
   return (
-    <section
-      className="relative min-h-screen py-20 overflow-hidden"
-      style={{ backgroundColor: 'var(--bg)' }}
-    >
+    <section className="relative min-h-screen py-20 overflow-hidden" style={{ backgroundColor: 'var(--bg)' }}>
+      <Toaster position="top-right" reverseOrder={false} />
       <Container>
         <div className="max-w-lg mx-auto relative animate-fadeInUp">
           <div className="text-center mb-12">
@@ -46,15 +89,11 @@ const MyProfile = () => {
             <div className="flex justify-center mb-6 relative">
               <div className="relative group">
                 <img
-                  src={
-                    user?.photoURL || 'https://i.ibb.co/MBtjqXQ/no-avatar.gif'
-                  }
+                  src={preview}
                   alt="Profile"
                   className="h-32 w-32 rounded-full object-cover border-4 border-(--primary) shadow-2xl transition-transform duration-500 group-hover:scale-105"
                 />
-                {!user?.photoURL && (
-                  <FaUserCircle className="absolute h-32 w-32 text-(--primary)/50 top-0 left-0" />
-                )}
+                {!preview && <FaUserCircle className="absolute h-32 w-32 text-(--primary)/50 top-0 left-0" />}
                 <div className="absolute -bottom-2 -right-2 w-8 h-8 rounded-full bg-(--secondary) flex items-center justify-center text-white shadow-lg cursor-pointer">
                   ✎
                 </div>
@@ -66,7 +105,7 @@ const MyProfile = () => {
                 <label className="text-sm text-(--text)/70">Email</label>
                 <input
                   type="email"
-                  value={user?.email}
+                  value={user?.email || ''}
                   disabled
                   className="w-full mt-2 px-4 py-2 rounded-xl bg-(--card-bg) border border-(--border) focus:outline-none focus:ring-2 focus:ring-(--primary) transition"
                 />
@@ -84,9 +123,7 @@ const MyProfile = () => {
               </div>
 
               <div>
-                <label className="text-sm text-(--text)/70">
-                  Profile Image
-                </label>
+                <label className="text-sm text-(--text)/70">Profile Image</label>
                 <input
                   type="file"
                   accept="image/*"
@@ -97,9 +134,10 @@ const MyProfile = () => {
 
               <button
                 type="submit"
+                disabled={loading}
                 className="w-full mt-4 flex justify-center items-center gap-2 px-6 py-3 rounded-2xl bg-(--primary) text-white font-semibold hover:scale-105 hover:shadow-xl transition"
               >
-                Update Profile
+                {loading ? 'Updating...' : 'Update Profile'}
               </button>
             </form>
           </div>
