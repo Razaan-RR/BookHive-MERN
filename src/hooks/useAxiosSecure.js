@@ -1,7 +1,7 @@
 // import axios from 'axios';
 
 // const axiosSecure = axios.create({
-//     baseURL: 'http://localhost:3000',
+//     baseURL: 'https://book-hive-server-pink.vercel.app',
 //     // You can add headers or other configurations here
 // });
 // const useAxiosSecure = () => {
@@ -13,7 +13,7 @@
 // import { getAuth } from 'firebase/auth'
 
 // const axiosSecure = axios.create({
-//   baseURL: 'http://localhost:3000',
+//   baseURL: 'https://book-hive-server-pink.vercel.app',
 // })
 
 // // Add a request interceptor to include Firebase token
@@ -38,7 +38,7 @@
 import axios from 'axios'
 
 const axiosSecure = axios.create({
-  baseURL: 'http://localhost:3000',
+  baseURL: 'https://book-hive-server-pink.vercel.app',
 })
 
 const useAxiosSecure = () => {
