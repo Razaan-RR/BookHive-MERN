@@ -19,6 +19,7 @@ import ManageBooks from '../pages/Dashboard/Admin/ManageBooks'
 import Orders from '../pages/Dashboard/Librarian/Orders'
 import ErrorPage from '../components/Common/ErrorPage'
 import PaymentSuccess from '../pages/Payment/PaymentSuccess'
+import EditBook from '../pages/Dashboard/Librarian/EditBook'
 
 export const router = createBrowserRouter([
   {
@@ -98,6 +99,10 @@ export const router = createBrowserRouter([
             <MyBooks />
           </PrivateRoute>
         ),
+      },
+      {
+        path: 'edit-book/:id',
+        element: <EditBook />,
       },
       {
         path: 'orders',
