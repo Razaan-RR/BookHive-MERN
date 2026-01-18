@@ -8,6 +8,7 @@ import WhyChooseBookHive from '../../../components/Home/WhyChooseBookHive'
 import { useEffect, useState } from 'react'
 import Coverage from '../../../components/Home/Coverage'
 import HowItWorks from '../../../components/Home/HowItWorks '
+import MeetLibrarians from '../../../components/Home/MeetLibrarians '
 
 const slideLeft = {
   hidden: { opacity: 0, x: -80 },
@@ -79,6 +80,7 @@ function Home() {
 
       <Testimonials />
       <HowItWorks></HowItWorks>
+      <MeetLibrarians></MeetLibrarians>
     </div>
   )
 }
