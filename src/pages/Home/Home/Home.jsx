@@ -7,6 +7,7 @@ import Testimonials from '../../../components/Home/Testimonials'
 import WhyChooseBookHive from '../../../components/Home/WhyChooseBookHive'
 import { useEffect, useState } from 'react'
 import Coverage from '../../../components/Home/Coverage'
+import HowItWorks from '../../../components/Home/HowItWorks '
 
 const slideLeft = {
   hidden: { opacity: 0, x: -80 },
@@ -77,6 +78,7 @@ function Home() {
       </motion.div>
 
       <Testimonials />
+      <HowItWorks></HowItWorks>
     </div>
   )
 }
