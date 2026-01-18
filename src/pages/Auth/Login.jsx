@@ -16,6 +16,7 @@ const Login = () => {
   const {
     register,
     handleSubmit,
+    setValue,
     formState: { errors },
   } = useForm()
 
@@ -41,6 +42,14 @@ const Login = () => {
   const onError = (errors) => {
     if (errors.email) toast.error('Valid email is required')
     if (errors.password) toast.error('Password is invalid')
+  }
+
+  const handleDemoLogin = () => {
+    const demoEmail = 'demo@bookhive.com'
+    const demoPassword = 'Demo123'
+    setValue('email', demoEmail)
+    setValue('password', demoPassword)
+    handleLogIn({ email: demoEmail, password: demoPassword })
   }
 
   return (
@@ -139,6 +148,14 @@ const Login = () => {
                 Log In
               </button>
             </form>
+
+            <button
+              onClick={handleDemoLogin}
+              className="btn w-full mt-3 text-white font-semibold tracking-wide rounded-3xl"
+              style={{ backgroundColor: 'var(--secondary)' }}
+            >
+              Demo Login
+            </button>
 
             <div className="my-6 flex items-center gap-3">
               <div className="flex-1 h-px bg-(--border)" />
