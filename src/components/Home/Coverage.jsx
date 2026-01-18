@@ -17,7 +17,7 @@ function Coverage({ centerLocations }) {
       <div className="absolute -top-32 -left-32 w-96 h-96 bg-(--secondary) opacity-20 blur-[120px] rounded-full" />
       <div className="absolute -bottom-32 -right-32 w-96 h-96 bg-(--primary) opacity-20 blur-[120px] rounded-full" />
 
-      <div className="relative max-w-7xl mx-auto">
+      <div className="relative max-w-7xl mx-auto z-10">
         <div className="text-center max-w-2xl mx-auto mb-12">
           <span className="inline-block mb-6 px-6 py-2 rounded-full text-2xl sm:text-3xl font-bold bg-(--secondary)/25 text-(--text) shadow-sm">
             📍 Coverage Area
@@ -34,7 +34,6 @@ function Coverage({ centerLocations }) {
           </p>
         </div>
 
-        {/* Search */}
         <div className="flex justify-center mb-10">
           <input
             type="text"

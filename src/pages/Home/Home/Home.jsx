@@ -36,7 +36,6 @@ function Home() {
   return (
     <div className="overflow-hidden">
       <Banner />
-
       <motion.div
         variants={slideLeft}
         initial="hidden"
@@ -46,9 +45,7 @@ function Home() {
       >
         <LatestBooks />
       </motion.div>
-
       <Coverage centerLocations={centerLocations} />
-
       <motion.div
         variants={slideRight}
         initial="hidden"
@@ -58,7 +55,6 @@ function Home() {
       >
         <WhyChooseBookHive />
       </motion.div>
-
       <motion.div
         variants={slideLeft}
         initial="hidden"
@@ -68,7 +64,6 @@ function Home() {
       >
         <FeaturedCategories />
       </motion.div>
-
       <motion.div
         variants={slideRight}
         initial="hidden"
@@ -78,10 +73,13 @@ function Home() {
       >
         <FeaturedCollections />
       </motion.div>
-
-      <Testimonials />
+      <section id="testimonials">
+        <Testimonials />
+      </section>
       <HowItWorks></HowItWorks>
-      <MeetLibrarians></MeetLibrarians>
+      <section id="librarians">
+        <MeetLibrarians></MeetLibrarians>
+      </section>
       <BookBundles></BookBundles>
     </div>
   )

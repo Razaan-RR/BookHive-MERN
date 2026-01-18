@@ -30,7 +30,7 @@ const Navbar = () => {
     setDarkMode((prev) => !prev)
     document.documentElement.setAttribute(
       'data-theme',
-      darkMode ? 'light' : 'dark'
+      darkMode ? 'light' : 'dark',
     )
   }
 
@@ -45,6 +45,27 @@ const Navbar = () => {
           Home
         </NavLink>
       </li>
+
+      <li>
+        <a
+          href="#librarians"
+          onClick={() => setMobileOpen(false)}
+          className="px-5 py-2 transition-all font-medium"
+        >
+          Our Librarians
+        </a>
+      </li>
+
+      <li>
+        <a
+          href="#testimonials"
+          className="px-5 py-2 transition-all font-medium"
+          onClick={() => setMobileOpen(false)}
+        >
+          Reviews
+        </a>
+      </li>
+
       <li>
         <NavLink
           to="/books"
@@ -54,6 +75,7 @@ const Navbar = () => {
           All Books
         </NavLink>
       </li>
+
       {user && (
         <li>
           <NavLink
@@ -87,7 +109,9 @@ const Navbar = () => {
             </span>
           </Link>
         </div>
+
         <ul className="hidden lg:flex gap-4 items-center">{links}</ul>
+
         <div className="flex items-center gap-3 ml-4">
           <div className="relative" ref={userMenuRef}>
             {user ? (
@@ -120,6 +144,7 @@ const Navbar = () => {
               </div>
             )}
           </div>
+
           <button
             onClick={toggleTheme}
             className="p-2 transition-all text-xl shadow-md"
@@ -127,6 +152,7 @@ const Navbar = () => {
           >
             {darkMode ? <FaSun className="text-yellow-400" /> : <FaMoon />}
           </button>
+
           <div className="lg:hidden flex items-center">
             <button
               onClick={() => setMobileOpen((prev) => !prev)}
@@ -138,6 +164,7 @@ const Navbar = () => {
           </div>
         </div>
       </div>
+
       {mobileOpen && (
         <ul
           className="lg:hidden bg-card-bg w-full flex flex-col gap-2 p-4 shadow-md animate-fadeInUp"
@@ -164,6 +191,7 @@ const Navbar = () => {
           )}
         </ul>
       )}
+
       <ToastContainer position="top-right" autoClose={3000} />
     </nav>
   )

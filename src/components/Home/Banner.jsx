@@ -72,7 +72,6 @@ function Banner() {
               >
                 <FaBookOpen /> Explore All Books
               </Link>
-              
             </div>
           </div>
 
