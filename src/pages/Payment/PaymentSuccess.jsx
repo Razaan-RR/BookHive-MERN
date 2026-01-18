@@ -54,7 +54,7 @@ const PaymentSuccess = () => {
           </Link>
 
           <Link
-            to="/"
+            to="/dashboard/my-orders"
             className="flex-1 py-2 sm:py-3 rounded-lg font-semibold text-center transition"
             style={{
               border: '2px solid var(--secondary)',
