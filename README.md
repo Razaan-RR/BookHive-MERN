@@ -1,4 +1,3 @@
-
 # BookHive – A Book Courier App
 
 ## Project Name
@@ -12,15 +11,6 @@ BookHive is a full-stack book courier application that allows users to browse, o
 ## Live URL
 
 https://sage-bubblegum-e870ed.netlify.app/
-
-## Key Features
-
-* **Wishlist & Reviews:** Users can add books to a wishlist and leave ratings/reviews.
-* **Search & Sort:** Search books by name and sort by price.
-* **JWT Protected Routes:** Only authenticated users can access protected routes.
-* **Animated & Responsive UI:** Engaging banners, cards, and dashboards.
-* Users can pay for their orders online.
-* Orders track both **order status** (`pending → shipped → delivered`) and **payment status** (`unpaid → paid`).
 
 ### Role-Based Features
 
@@ -43,15 +33,9 @@ https://sage-bubblegum-e870ed.netlify.app/
 * Manage all books (publish/unpublish, delete).
 * Full visibility on all orders and system-wide management.
 
-## NPM Packages Used
+## Tech Stack
 
-* `react`, `react-dom` – Frontend library
-* `react-router-dom` – Routing
-* `axios` – API requests
-* `firebase` – Authentication & storage
-* `react-query` – Data fetching & caching
-* `react-icons` – Icons
-* `tailwindcss` – Styling
-* `react-hook-form` – Forms & validation
+* React
 
 ---
+
